@@ -322,14 +322,11 @@ function validateid(id) {
     // Locate the link element in the table
     const link = id.parentElement.parentElement.cells[7].firstChild;
 
-    // Proxy URL for CORS bypass
-    const proxy = 'https://cors-anywhere.herokuapp.com/';
-
-    // Steam API request
-    const APIURL = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=5D093A903BB3187D54AA6D77A9C9ECCA&steamids=${id.value}`;
+    // New API URL to call the backend
+    const APIURL = `https://salumee.com/steam?id=${id.value}`;
 
     // Make the API request
-    fetch(proxy + APIURL)
+    fetch(APIURL)
       .then(response => {
         if (!response.ok) {
           throw new Error(`API error: ${response.status} ${response.statusText}`);
@@ -337,10 +334,9 @@ function validateid(id) {
         return response.json();
       })
       .then(data => {
-        if (data.response && data.response.players.length > 0) {
-          const player = data.response.players[0];
-          link.href = player.profileurl; // Set the profile link
-          link.innerHTML = player.personaname; // Set the nickname
+        if (data && data.personaname && data.profileurl) {
+          link.href = data.profileurl; // Set the profile link
+          link.innerHTML = data.personaname; // Set the nickname
         } else {
           id.style.backgroundColor = '#f66'; // Invalid ID
           link.innerHTML = '';
@@ -354,7 +350,6 @@ function validateid(id) {
       });
   }
 }
-
 
 function ValidateColor(colorbutton) {
   var pcolor = colorbutton.value;
@@ -408,10 +403,10 @@ function ToggleConsole() {
   var select = document.getElementById('Console');
   var button = document.getElementById('ConsoleButton');
   if (select.style.display === "none") {
-    button.innerHTML = "Close Debug Console";
+    button.innerHTML = "Hide Debug Console";
     select.style.display = "block";
   } else {
-    button.innerHTML = "Open Debug Console";
+    button.innerHTML = "Show Debug Console";
     select.style.display = "none";
   }
 }
