@@ -306,17 +306,30 @@ function StaffAddRow(oButton) {
 
 // Enhanced version of Steam ID check function
 function validateid(id) {
-  if (id.value.length !== 17 || BigInt(id.value) < 76561197960265729n || BigInt(id.value) > 76561202255233023n) {
+  // Validate Steam ID length and range
+  if (
+    id.value.length !== 17 ||
+    BigInt(id.value) < 76561197960265729n || // Minimum possible Steam ID
+    BigInt(id.value) > 76561202255233023n   // Maximum possible Steam ID
+  ) {
     id.style.backgroundColor = '#f66'; // Light red for invalid ID
-    id.parentElement.parentElement.cells[7].firstChild.innerHTML = "";
-    console.warn("Invalid Steam ID:", id.value);
+    id.parentElement.parentElement.cells[7].firstChild.innerHTML = '';
+    console.warn(`WARN: ${id.value} is not a valid Steam ID`);
+    return;
   } else {
-    id.style.backgroundColor = '#fff'; // Reset to default
-    const link = id.parentElement.parentElement.cells[7].firstChild;
-    const API_KEY = '5D093A903BB3187D54AA6D77A9C9ECCA'; // Replace with your actual key
-    const API_URL = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${API_KEY}&steamids=${id.value}`;
+    id.style.backgroundColor = '#fff'; // Reset background for valid ID
 
-    fetch(API_URL)
+    // Locate the link element in the table
+    const link = id.parentElement.parentElement.cells[7].firstChild;
+
+    // Proxy URL for CORS bypass
+    const proxy = 'https://cors-anywhere.herokuapp.com/';
+
+    // Steam API request
+    const APIURL = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=5D093A903BB3187D54AA6D77A9C9ECCA&steamids=${id.value}`;
+
+    // Make the API request
+    fetch(proxy + APIURL)
       .then(response => {
         if (!response.ok) {
           throw new Error(`API error: ${response.status} ${response.statusText}`);
@@ -324,21 +337,24 @@ function validateid(id) {
         return response.json();
       })
       .then(data => {
-        if (data.response.players.length === 0) {
-          id.style.backgroundColor = '#f66'; // No matching player
-          link.innerHTML = "";
-          console.warn("Invalid Steam ID:", id.value);
-        } else {
+        if (data.response && data.response.players.length > 0) {
           const player = data.response.players[0];
-          link.href = player.profileurl;
-          link.innerHTML = player.personaname;
+          link.href = player.profileurl; // Set the profile link
+          link.innerHTML = player.personaname; // Set the nickname
+        } else {
+          id.style.backgroundColor = '#f66'; // Invalid ID
+          link.innerHTML = '';
+          console.warn(`WARN: ${id.value} is not a valid Steam ID`);
         }
       })
       .catch(error => {
-        console.error("Error fetching Steam profile:", error);
+        console.error('Error fetching Steam profile:', error);
+        id.style.backgroundColor = '#f66';
+        link.innerHTML = '';
       });
   }
 }
+
 
 function ValidateColor(colorbutton) {
   var pcolor = colorbutton.value;

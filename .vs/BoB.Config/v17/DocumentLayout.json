@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "D:\\Solutions\\BoB.Config\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\mainjs.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|solutionrelative:mainjs.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -43,32 +39,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": ".gitignore",
-              "DocumentMoniker": "D:\\Solutions\\BoB.Config\\.gitignore",
-              "RelativeDocumentMoniker": ".gitignore",
-              "ToolTip": "D:\\Solutions\\BoB.Config\\.gitignore",
-              "RelativeToolTip": ".gitignore",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-11-23T20:07:41.186Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "mainjs.js",
               "DocumentMoniker": "D:\\Solutions\\BoB.Config\\mainjs.js",
               "RelativeDocumentMoniker": "mainjs.js",
               "ToolTip": "D:\\Solutions\\BoB.Config\\mainjs.js",
               "RelativeToolTip": "mainjs.js",
-              "ViewState": "AgIAACQBAAAAAAAAAAAAACsBAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAD4BAAAAAAAAAAAAAD8BAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-11-23T10:15:03.568Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "main.css",
               "DocumentMoniker": "D:\\Solutions\\BoB.Config\\main.css",
               "RelativeDocumentMoniker": "main.css",
@@ -81,7 +64,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "index.html",
               "DocumentMoniker": "D:\\Solutions\\BoB.Config\\index.html",
               "RelativeDocumentMoniker": "index.html",
