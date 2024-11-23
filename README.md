@@ -1,8 +1,8 @@
-# Beasts of Bermuda Config Generator
+# Beasts of Bermuda - Server Configuration Generator
 
-A self-contained webpage designed to generate and edit configuration files for the *Beasts of Bermuda* game server.
+A self-contained web app designed to generate and edit configuration files for the *Beasts of Bermuda* game server.
 
-## Features
+## $\color{red}{\textsf{Features}}$
 - **Import and Export**: Easily import existing configuration files and export edited or newly created configurations.
 - **User-Friendly Interface**: Offers a straightforward and intuitive UI to simplify the configuration process.
 - **Game Compatibility**: Fully compatible with the latest server version of *Beasts of Bermuda*.
