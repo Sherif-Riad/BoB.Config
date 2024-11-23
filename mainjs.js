@@ -322,7 +322,7 @@ function validateid(id) {
     // Locate the link element in the table
     const link = id.parentElement.parentElement.cells[7].firstChild;
 
-    // New API URL to call the backend
+    // Make the API request to your own endpoint
     const APIURL = `https://salumee.com/steam?id=${id.value}`;
 
     // Make the API request
@@ -334,9 +334,15 @@ function validateid(id) {
         return response.json();
       })
       .then(data => {
-        if (data && data.personaname && data.profileurl) {
-          link.href = data.profileurl; // Set the profile link
-          link.innerHTML = data.personaname; // Set the nickname
+        console.log("Response Data:", data);  // Log the entire response data to inspect it
+
+        // Check the correct path for player data
+        if (data.response && data.response.players && data.response.players.length > 0) {
+          const player = data.response.players[0];  // Access the first player in the response
+
+          // Set profile information in the table
+          link.href = player.profileurl; // Set the profile link
+          link.innerHTML = player.personaname; // Set the nickname
         } else {
           id.style.backgroundColor = '#f66'; // Invalid ID
           link.innerHTML = '';
