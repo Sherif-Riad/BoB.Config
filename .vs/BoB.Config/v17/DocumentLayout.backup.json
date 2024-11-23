@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "D:\\Solutions\\BoB.Config\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
-      "RelativeMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|solutionrelative:readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+      "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\mainjs.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|solutionrelative:mainjs.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -13,10 +13,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|solutionrelative:main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\mainjs.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|solutionrelative:mainjs.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -43,25 +39,12 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "README.md",
-              "DocumentMoniker": "D:\\Solutions\\BoB.Config\\README.md",
-              "RelativeDocumentMoniker": "README.md",
-              "ToolTip": "D:\\Solutions\\BoB.Config\\README.md",
-              "RelativeToolTip": "README.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2024-11-23T13:52:35.826Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "mainjs.js",
               "DocumentMoniker": "D:\\Solutions\\BoB.Config\\mainjs.js",
               "RelativeDocumentMoniker": "mainjs.js",
               "ToolTip": "D:\\Solutions\\BoB.Config\\mainjs.js",
               "RelativeToolTip": "mainjs.js",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAACUAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAACQBAAAAAAAAAAAAACsBAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-11-23T10:15:03.568Z",
               "EditorCaption": ""
@@ -74,7 +57,7 @@
               "RelativeDocumentMoniker": "main.css",
               "ToolTip": "D:\\Solutions\\BoB.Config\\main.css",
               "RelativeToolTip": "main.css",
-              "ViewState": "AgIAAPkAAAAAAAAAAAAowBkBAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAPsAAAAAAAAAAAAAAAsBAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2024-11-23T08:43:59.849Z",
               "EditorCaption": ""
@@ -87,7 +70,7 @@
               "RelativeDocumentMoniker": "index.html",
               "ToolTip": "D:\\Solutions\\BoB.Config\\index.html",
               "RelativeToolTip": "index.html",
-              "ViewState": "AgIAABkBAAAAAAAAAAAAADEBAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAHgEAAAAAAAAAAAAAI0EAABVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2024-11-23T08:06:42.785Z",
               "EditorCaption": ""

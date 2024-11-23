@@ -169,8 +169,7 @@ body {
   .tooltip .tooltiptext {
     visibility: hidden;
     width: 360px;
-    background-color: #ccc;
-    color: #000;
+    background-color: burlywood;
     text-align: left;
     padding: .2rem;
     border-radius: 6px;
@@ -259,22 +258,37 @@ input[type=number] {
 
 label {
   vertical-align: middle;
+  min-height: 1.4rem;
 }
 
 select {
   vertical-align: middle;
+  border-radius: .3rem;
+  border-width: .1rem;
+  min-height: 1.6rem;
 }
 
 input[type=text] {
   vertical-align: middle;
   border-radius: .3rem;
   border-width: .1rem;
+  min-height: 1.4rem;
 }
 
 input[type=number] {
   vertical-align: middle;
   border-radius: .3rem;
   border-width: .1rem;
+  min-height: 1.4rem;
+}
+
+input[type=color] {
+  padding: .1rem;
+  vertical-align: middle;
+  border-radius: .3rem;
+  border-width: .1rem;
+  min-height: 1.8rem;
+  max-height: 1.8rem;
 }
 
 textarea {

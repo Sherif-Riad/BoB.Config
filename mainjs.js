@@ -275,32 +275,68 @@ function StaffAddRow(oButton) {
   cell7.innerHTML = '<a href="#" target="_blank"></a>';
 }
 
+//function validateid(id) {
+//  if (id.value.length !== 17 || BigInt(id.value) < 76561197960265729n || BigInt(id.value) > 76561202255233023n) {//javascript limitation of comparing 64 bit numbers is very blatent here... also this is both the absolute min and max steam id possible
+//    id.style.backgroundColor = '#f66';//light red
+//    id.parentElement.parentElement.cells[7].firstChild.innerHTML = "";
+//    InternalDebug("WARN: " + id.value + "is not a valid steam id");
+//  } else {
+//    id.style.backgroundColor = '#fff';
+//    var link = id.parentElement.parentElement.cells[7].firstChild;
+//    //we contact the api server here to get the steam name/link to put in the <a> tag
+//    var xhr = new XMLHttpRequest();
+//    xhr.onreadystatechange = function () {
+//      if (this.readyState != 4) return;
+//      if (this.status == 200) {
+//        var data = JSON.parse(this.responseText);
+//        link.href = data.url;
+//        link.innerHTML = data.nickname;
+//      }
+//      if (this.status == 404) {
+//        id.style.backgroundColor = '#f66';//the id is invalid because it dosent exist
+//        id.parentElement.parentElement.cells[7].firstChild.innerHTML = "";
+//        InternalDebug("WARN: " + id.value + "is not a valid steam id");
+//      }
+//    };
+//    var APIURL = 'https://steamapi.raptorsystems.site/?id=' + id.value;//this API site is a NODE JS steam api site ran by Cleafspear.
+//    xhr.open('GET', APIURL, true);
+//    xhr.send();
+//  }
+//}
+
+// Enhanced version of Steam ID check function
 function validateid(id) {
-  if (id.value.length !== 17 || BigInt(id.value) < 76561197960265729n || BigInt(id.value) > 76561202255233023n) {//javascript limitation of comparing 64 bit numbers is very blatent here... also this is both the absolute min and max steam id possible
-    id.style.backgroundColor = '#f66';//light red
+  if (id.value.length !== 17 || BigInt(id.value) < 76561197960265729n || BigInt(id.value) > 76561202255233023n) {
+    id.style.backgroundColor = '#f66'; // Light red for invalid ID
     id.parentElement.parentElement.cells[7].firstChild.innerHTML = "";
-    InternalDebug("WARN: " + id.value + "is not a valid steam id");
+    console.warn("Invalid Steam ID:", id.value);
   } else {
-    id.style.backgroundColor = '#fff';
-    var link = id.parentElement.parentElement.cells[7].firstChild;
-    //we contact the api server here to get the steam name/link to put in the <a> tag
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-      if (this.readyState != 4) return;
-      if (this.status == 200) {
-        var data = JSON.parse(this.responseText);
-        link.href = data.url;
-        link.innerHTML = data.nickname;
-      }
-      if (this.status == 404) {
-        id.style.backgroundColor = '#f66';//the id is invalid because it dosent exist
-        id.parentElement.parentElement.cells[7].firstChild.innerHTML = "";
-        InternalDebug("WARN: " + id.value + "is not a valid steam id");
-      }
-    };
-    var APIURL = 'https://steamapi.raptorsystems.site/?id=' + id.value;//this API site is a NODE JS steam api site ran by Cleafspear. 
-    xhr.open('GET', APIURL, true);
-    xhr.send();
+    id.style.backgroundColor = '#fff'; // Reset to default
+    const link = id.parentElement.parentElement.cells[7].firstChild;
+    const API_KEY = '5D093A903BB3187D54AA6D77A9C9ECCA'; // Replace with your actual key
+    const API_URL = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${API_KEY}&steamids=${id.value}`;
+
+    fetch(API_URL)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.response.players.length === 0) {
+          id.style.backgroundColor = '#f66'; // No matching player
+          link.innerHTML = "";
+          console.warn("Invalid Steam ID:", id.value);
+        } else {
+          const player = data.response.players[0];
+          link.href = player.profileurl;
+          link.innerHTML = player.personaname;
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching Steam profile:", error);
+      });
   }
 }
 

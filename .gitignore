@@ -1,0 +1,42 @@
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build outputs
+bin/
+obj/
+out/
+debug/
+release/
+
+# Ignore Node.js dependencies (if applicable)
+node_modules/
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore other unnecessary files
+*.bak
+*.tmp
+*.swp
+
+# Ignore environment or config files with sensitive information
+.env
+.env.local
+*.config.json
+
+# Ignore deployment artifacts
+*.zip
+*.tar.gz
+
+# Ignore temporary files
+*.tmp
+*.cache
