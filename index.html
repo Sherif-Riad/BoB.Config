@@ -1,1040 +1,1515 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Beast of Bermuda Config Tool</title>
-        <meta name="description" content="The Official configuration Generator and Editor for the game Beasts of Bermuda, Developed by Discord user Cleafspear">
-        <link rel="stylesheet" href="main.css">
-        <script type="text/javascript" src="mainjs.js"></script>
-        <script type="text/javascript" src="generate.js"></script>
-        <script type="text/javascript" src="upload.js"></script>
-    </head>
-    <body>
-        <div id="loadHeader" style="display: none">
-            <p style="align-self: center ; text-align: center; background-color: red">LOADING DATA, Please wait while we read and populate the data from your config</p>
-        </div>
-        <div class="content">
-            <h1>Beast of Bermuda Config Tool</h1>
-            <b>This configuration Generator/Editor is compatible with Version 1.2.0364 of the server.</b>
-            <br>
-            <div class="tooltip">note:please hover over anything with a dashed line under it.<span class="tooltiptext"> It will have additional information about if you are confused about something!</span></div>
-            <br>
-            <button id="btnload" onclick="OpenLoad()">Load Existing Game.ini</button>
-            <!-- load file modal-->
-            <div id="fileModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        Config Load
-                        <span class="close" onclick="CloseLoad()">Close &times;</span>
-                    </div>
-                    <div class="modal-body">
-                        <!-- label for="file-upload">Load Existing Game.ini file:</label -->
-                        <input type="file" accept=".ini, .txt" onchange="readdata(this)"> <!--just a note..nothing is actually getting uploaded anywhere outside of the local client. this just lets us have the file avalible to be parsed by the script-->
-                        <br>
-                        Load an existing config file with the button above, or paste your config below and click Submit
-                        <br>
-                        <textarea rows="30" style="scroll-behavior: auto ;resize: horizontal" id="inputtxt" placeholder="Paste your config here"></textarea>
-                        <button id="Submit" onclick="SubmitConfig()">Submit</button>
-                    </div>
-                </div>
-            </div>
-            <br>
-            Use the buttons below to modify the config settings
-            <div class="btnContainer">
-                <button type="button" id="BaseGamebutton" onclick="SHfuntion('BaseGame')">Show Basic Configuration:</button>
-                <button type="button" id="Weatherbutton" onclick="SHfuntion('Weather')">Show Weather Configuration:</button>
-                <button type="button" id="Worldbutton" onclick="SHfuntion('World')">Show World Configuration:</button>
-                <button type="button" id="Dino1button" onclick="SHfuntion('Dino1')">Show Global Dino Configuration:</button>
-				<button type="button" id="Dino2button" onclick="SHfuntion('Dino2')">Show Per Dino Configuration:</button>
-				<button type="button" id="Dino3button" onclick="SHfuntion('Dino3')">Show Mixed Dino Configuration:</button>
-                <button type="button" id="AIbutton" onclick="SHfuntion('AI')">Show AI Configuration:</button>
-                <button type="button" id="Section3button" onclick="SHfuntion('Section3')">Show Admin Rank Configuration:</button>
-                <button type="button" id="Section4button" onclick="SHfuntion('Section4')">Show Command Configuration:</button>
-                <button type="button" id="Section5button" onclick="SHfuntion('Section5')">Show Player Configuration:</button>
-                <button type="button" id="Section6button" onclick="SHfuntion('Section6')">Show Advanced Configuration:</button>
-                <button type="button" id="Finalbutton" onclick="SHfuntion('Final')">Show Configuration Outputs:</button>
-            </div>
-            <div class="SectionContainer">
-                <div class="Section" id="BaseGame" style="display: none">
-                    <div class="section-header">
-                        Basic Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <label for="maps">Map:</label>
-                    <!-- selector for the map. add maps and define the internal names in these options-->
-                    <select id="maps">
-                        <option value="Ancestral_Plains">Ancestral Plains</option>
-						<option value="Ancestral_Plains_Canvas">Ancestral Plains (Canvas)</option>
-						<option selected value="Forest_Island">Forest Island</option>
-						<option value="Forest_Island_Canvas">Forest Island (Canvas)</option>
-						<option value="islatitania">Isla Titania</option>
-                        <option value="Rival_Shores">Rival Shores</option>
-						<option value="Rival_Shores_Canvas">Rival Shores (Canvas)</option>
-                        <option value="DM_Caldera">Caldera (DeathMatch)</option>
-						<option value="DM_Caldera_Canvas">Caldera (Canvas)</option>
-						<option value="Volcano_Bay">Volcano Bay (Canvas)</option>
-                        <option value="Test_Performance">Test Performance (Testing Map)</option>
-						<option value="BB_Test_Map">Test Map (Debug Map)</option>
-                    </select>
-                    <br>
-                    <label for="gamemode">
-                        <div class="tooltip">Gamemode:
-                            <span class="tooltiptext">Life Cycle: grow and reproduce!<br>Combat:Fight to the Death!<br>Free Roam:Explore and chat!</span>
-                        </div>
-                    </label>
-                    <select id="gamemode">
-                            <option value="Life_Cycle">Life Cycle</option>
-                            <option value="Combat">Combat</option>
-                            <option value="Free_Roam">Free Roam</option>
-                        </select>
-                    <br>
-					<label for="PreferredGameExperience">
-                        <div class="tooltip">Preferred Game Experience:
-                            <span class="tooltiptext">PvPvE :Classic survival <br> PvP : server enables more PvP features <br>PvE : server disables intimidation and damage, PvP ONLY via Dueling (overridden on Titania to PvPvE)</span>
-                        </div>
-                    </label>
-                    <select id="PreferredGameExperience">
-                            <option value="EGameExperience::PvPvE">PvPvE</option>
-                            <option value="EGameExperience::PvP">PvP</option>
-                            <option value="EGameExperience::PvE">PvE</option>
-                        </select>
-                    <br>
-                    <label for="FoodDrainDifficulty">
-                        <div class="tooltip">Server Food Difficulty:
-                            <span class="tooltiptext">This sets the server food drain rates.<br>Easy:Half food drain<br>Normal:Default drain rates<br>Hard:Double drain rates. hard to survive<br>Expert:Triple drain rates.for the Hardcore Dinos</span>
-                        </div>
-                    </label>
-                    <select id="FoodDrainDifficulty">
-                            <option value="EGameDifficulty::Easy">Easy</option>
-                            <option selected value="EGameDifficulty::Normal">Normal</option>
-                            <option value="EGameDifficulty::Hard">Hard</option>
-                            <option value="EGameDifficulty::Expert">Expert</option>
-                        </select>
-                    <br>
-					<label for="WaterDrainDifficulty">
-                        <div class="tooltip">Server Water Difficulty:
-                            <span class="tooltiptext">This sets the server water drain rates.<br>Easy:Half water drain<br>Normal:Default drain rates<br>Hard:Double drain rates. hard to survive<br>Expert:Triple drain rates.for the Hardcore Dinos</span>
-                        </div>
-                    </label>
-                    <select id="WaterDrainDifficulty">
-                            <option value="EGameDifficulty::Easy">Easy</option>
-                            <option selected value="EGameDifficulty::Normal">Normal</option>
-                            <option value="EGameDifficulty::Hard">Hard</option>
-                            <option value="EGameDifficulty::Expert">Expert</option>
-                        </select>
-                    <br>
-					<label for="WaterDirtinessDifficulty">
-                        <div class="tooltip">Server Water Dirtiness Difficulty:
-                            <span class="tooltiptext">This sets the server water Dirtiness rates.<br>Easy:Half water Dirtiness speed<br>Normal:Default Dirtiness speed rates<br>Hard:Double Dirtiness rates. hard to survive<br>Expert:Triple Dirtiness rates.for the Hardcore Dinos</span>
-                        </div>
-                    </label>
-                    <select id="WaterDirtinessDifficulty">
-                            <option value="EGameDifficulty::Easy">Easy</option>
-                            <option selected value="EGameDifficulty::Normal">Normal</option>
-                            <option value="EGameDifficulty::Hard">Hard</option>
-                            <option value="EGameDifficulty::Expert">Expert</option>
-                        </select>
-                    <br>
-                    <label for="discordenable">Discord link Enabled:</label>
-                    <input type="checkbox" id="discordenable" onchange="SHSubSection('discord')" >
-                    <br>
-                    <div id="discord" style="display: none">
-                        <label><div class="tooltip">Discord Join ID:<span class="tooltiptext">this is the code after discord.gg/thiscodehere.<br>Will automatically remove the discord.gg/</span></div></label>
-                        <input type="text" id="discordlink" onchange="SanatizeInvite(this)">
-                        <br>
-                    </div>
-                    <label for="steamgroup">Steam Group Required:</label>
-                    <input type="checkbox" id="steamgroup" onchange="SHSubSection('steam')">
-                    <br>
-                    <div id="steam" style="display: none">
-                        <label><div class="tooltip">Steam Group ID:<span class="tooltiptext">this is the "long" steam name that your users should be in</span></div></label>
-                        <input type="text" id="steamname">
-                        <br>
-                    </div>
-                    <label for="motd">
-                        <div class="tooltip">Use MOTD:
-                            <span class="tooltiptext">Make Sure to have the file in place per the <a href="https://wiki.beastsofbermuda.com/Message_of_the_day" target="_blank">wiki entry!</a></span>
-                        </div>
-                    </label>
-                    <input type="checkbox" id="motd" >
-                    <br>
-                    <label for="console"><div class="tooltip">Console Lock:
-                            <span class="tooltiptext">Disabling this will place your server in open console mode and ignore command restriction settings</span>
-                        </div>
-                    </label>
-                    <input type="checkbox" id="console" checked>
-                    <br>
-                    <label for="slots">Reserved Admin Slots:</label>
-                    <input type="number" id = "slots" value=2 step= 1 style="width:40px">
-                    <br>
-                    <label for="gchat">Disable Global Chat:</label>
-                    <input type="checkbox" id="gchat" >
-                    <br>
-                    <label for="lchat">Disable Local Chat:</label>
-                    <input type="checkbox" id="lchat" >
-					<br>
-                    <label for="bDisableLeaderboard">Disable Leaderboards:</label>
-                    <input type="checkbox" id="bDisableLeaderboard" >
-					<br>
-					<label for="bDisableCharacterDeath"><div class="tooltip">Enable Auto Resurrection:
-                            <span class="tooltiptext">Enabling this will Auto Resurrect any dino that dies.<br>this is equivalent to the admin resurrection, where no growth is lost or penalties are incurred</span>
-                        </div></label>
-                    <input type="checkbox" id="bDisableCharacterDeath" >
-                    <br>
-                    <label for="RandomName"><div class="tooltip">Disable Random Names<span class="tooltiptext">When enabled, Disallows the use of the console command UseRandomName</span></div></label>
-                    <input type="checkbox" id="bDisableUseRandomName">
-                </div>
-                <div class="Section" id="Weather" style="display: none">
-                    <div class="section-header">
-                        Weather Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <label for="fire"><div class="tooltip">Enable Forest fires:<span class="tooltiptext">This will effect storm and admin spawned fires.</span></div></label>
-                    <input type="checkbox" id= "fire" checked >
-                    <br>
-                     <label for="StormS"><div class="tooltip">Cap Storm Surge:<span class="tooltiptext">This Keeps flooding from getting too high on the map. disable to allow Superfloods</span></div></label>
-                    <input type="checkbox" id= "StormS" checked >
-                     <br>
-                    <label for="StormSurgeMultiplier" ><div class="tooltip">Storm Surge Multiplier:
-                            <span class="tooltiptext">This adjust how high the surge from flooding will occur.<br>setting to 0 will disable flooding<br>setting above 1 will multiply the height the flooding will progress</span>
-                        </div></label>
-                    <input type="number" id ="StormSurgeMultiplier" value="1.0" min=0 max =100>
-                    <br>
-                    <label for="bSpawnsTornados"><div class="tooltip">Spawn Tornados:<span class="tooltiptext">This Enables or Disables tornado spawning during High Wind Storms</span></div></label>
-                    <input type="checkbox" id= "bSpawnsTornados" checked >
-                    <br>
-                    <label for="bStormsCauseStress"><div class="tooltip">Stressful Storms:<span class="tooltiptext">This Enables or Disables Stress caused by Severe Weather</span></div></label>
-                    <input type="checkbox" id= "bStormsCauseStress" checked >
-                    <br>
-                    <label for="SpeedMod" ><div class="tooltip">Weather System Speed:
-                            <span class="tooltiptext">This adjust how fast the weather system will run. a higher value will result in faster storms/Events.<br>A lower value will result in drawn out storms.</span>
-                        </div></label>
-                    <input type="number" id ="SpeedMod" value="1.0" min=0 max =100>
-                    <br>
-                    <label for="IntensityModifier" ><div class="tooltip">Weather System Intensity:
-                            <span class="tooltiptext">This adjust how Severe the weather system will be. a higher value will result in Extreme storms/Events.<br>A lower value will result in calmer, more tame weather.</span>
-                        </div></label>
-                    <input type="number" id ="IntensityModifier" value="1.0" min=0 max =10>
-                    <br>
-                    <label for="StormSpacingMultiplier" ><div class="tooltip">Weather System Period:
-                            <span class="tooltiptext">This adjust how often the weather system will spawn storms. a lower value will result in storms occurring one right after another.<br>A higher value will result in long periods between events.</span>
-                        </div></label>
-                    <input type="number" id ="StormSpacingMultiplier" value="1.0" min=0 max =10>
-                    <br>
-                    <label for="RainCommonness" ><div class="tooltip">Weather Type- Rain:
-                            <span class="tooltiptext">This adjust how often the weather system will spawn this weather event. a higher value will result in Rainstorms occurring more frequently, in relation to other storm types<br>A lower value will result in this weather type occurring less frequently.<br> setting this to 0 will disable this type of weather</span>
-                        </div></label>
-                    <input type="number" id ="RainCommonness" value="5" min=0 max =100>
-                    <br>
-                    <label for="FogCommonness" ><div class="tooltip">Weather Type- Fog:
-                            <span class="tooltiptext">This adjust how often the weather system will spawn this weather event. a higher value will result in Rainstorms occurring more frequently, in relation to other storm types<br>A lower value will result in this weather type occurring less frequently.<br> setting this to 0 will disable this type of weather</span>
-                        </div></label>
-                    <input type="number" id ="FogCommonness" value="2" min=0 max =100>
-                    <br>
-                    <label for="OvercastCommonness" ><div class="tooltip">Weather Type- Overcast:
-                            <span class="tooltiptext">This adjust how often the weather system will spawn this weather event. a higher value will result in Rainstorms occurring more frequently, in relation to other storm types<br>A lower value will result in this weather type occurring less frequently.<br> setting this to 0 will disable this type of weather</span>
-                        </div></label>
-                    <input type="number" id ="OvercastCommonness" value="2" min=0 max =100>
-                    <br>
-                    <label for="DryLightningCommonness" ><div class="tooltip">Weather Type- Dry Lightning:
-                            <span class="tooltiptext">This adjust how often the weather system will spawn this weather event. a higher value will result in Rainstorms occurring more frequently, in relation to other storm types<br>A lower value will result in this weather type occurring less frequently.<br> setting this to 0 will disable this type of weather</span>
-                        </div></label>
-                    <input type="number" id ="DryLightningCommonness" value="1" min=0 max =100>
-                </div>
-                <div class="Section" id="World" style="display: none">
-                    <div class="section-header">
-                        World Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <label for="DayLegnth">Day Length:</label>
-                    <input type="number" id="daycycle" value="4441" data-state=0 style="width:50px" onwheel="this.blur()" >
-                    <select id="DayMulti" onchange="RecomputeTime('daycycle', this)">
-                        <option value = 0 selected>Seconds</option>
-                        <option value = 1 >Minutes</option>
-                        <option value = 2 >Hours</option>
-                        <option value = 3 >Days</option>
-                    </select>
-                    <br>
-                    <label for="carcassrate"><div class="tooltip">Carcass Spawn Rate:
-                            <span class="tooltiptext">This multiplies the amount of total meat spawned over time on the map. max is 8x normal</span>
-                        </div></label>
-                    <input type="number" id ="carcassrate" value="1.0" min=0 max =8>
-                    <br>
-                    <label for="carcassratio" ><div class="tooltip">Carcass Spawn Ratio:
-                            <span class="tooltiptext">This adjust the size vs number of carcasses spawned.<br>A value closer to 0 will cause carcasses to spawn large, but rarely.<br>A value closer to 2 will cause carcasses to spawn small, but often.</span>
-                        </div></label>
-                    <input type="number" id ="carcassratio" value="1.0" min=0 max =2>
-                    <br>
-                    <label for="TunnelLifetime"><div class="tooltip">Tunnel Despawn time:
-                            <span class="tooltiptext">This determines the length of time a burrow network will remain after its last edit.<br>Please note, the tunnels are checked every 5 minutes, and there is a 5 minute delay when the timer hits 0 before it removes a network.</span>
-                        </div></label>
-                    <input type="number" id="TunnelLifetime" min=0 value= 3 step=1 data-state=3 onwheel="this.blur()" style="width:50px">
-                    <select id="TunnelMulti" onchange="RecomputeTime('TunnelLifetime', this)">
-                        <option value = 0>Seconds</option>
-                        <option value = 1>Minutes</option>
-                        <option value = 2>Hours</option>
-                        <option value = 3 selected>Days</option>
-                    </select>
-					<br>
-					<label for="bPortalsDisabled"><div class="tooltip">Disable Map Portals:<span class="tooltiptext">This will remove any portals on the map.</span></div></label>
-                    <input type="checkbox" id= "bPortalsDisabled" >
-                    <br>
-					<label for="bDisableRestlessDebuff"><div class="tooltip">Disable Restless Debuff:<span class="tooltiptext">This will remove the debuff while in caves</span></div></label>
-                    <input type="checkbox" id= "bDisableRestlessDebuff" >
-                    <br>
-					<label for="bDisableRandomEggSpawns"><div class="tooltip">Disable Random Eggs Spawns:<span class="tooltiptext">This will remove the abandoned eggs that spawn around the map</span></div></label>
-                    <input type="checkbox" id= "bDisableRandomEggSpawns" onchange="SHSubSection('Eggs')" >
-                    <br>
-                    <div id="Eggs" style="display: block">
-                        <label><div class="tooltip">Egg Spawn Chance:<span class="tooltiptext">This is the chance that a carcass spawn will generate an abandoned egg<br>Setting to 0 will stop egg spawning<br> Setting to 1 will always spawn eggs instead of carcasses</span></div></label>
-                        <input type="number" id="RandomEggSpawnChance" value= .05>
-                        <br>
-                    </div>
-					
-                    <label for="OceanHeightAdd"><div class="tooltip">Ocean Height Adjustment:
-                            <span class="tooltiptext">This adjust the default level of the ocean.<br>setting it positive will increase the default height<br>setting it negative will lower the default height</span>
-                        </div></label>
-                    <input type="number" id ="OceanHeightAdd" value="1.0" min=-1000000 max =1000000>
-					<br>
-					<label for="FoliageSpawnSpeed">
-                        <div class="tooltip">Foliage Spawn Rate:
-                            <span class="tooltiptext">This sets the Respawn rate of foliage</span>
-                        </div>
-                    </label>
-                    <select id="FoliageSpawnSpeed">
-                            <option value="EGrowthRate::VerySlow">Very Slow (1/2x)</option>
-							<option value="EGrowthRate::Slow">Slow (3/4x)</option>
-                            <option selected value="EGrowthRate::Normal">Normal</option>
-                            <option value="EGrowthRate::Fast">Fast(1 1/2x)</option>
-                            <option value="EGrowthRate::VeryFast">Very Fast(2x)</option>
-                        </select>
-                    <br>
-					<label for="bSpawnWorldEvents"><div class="tooltip">Enable World Events:<span class="tooltiptext">This will add the normally occuring world events that spawn occasionally on the map</span></div></label>
-                    <input type="checkbox" id= "bSpawnWorldEvents" >
-                    <br>
-                    <label for="WorldEventPrepTime"><div class="tooltip">World Event Prep time:
-                            <span class="tooltiptext">This adjust the amount of time from when a world event spawns to when it starts.<br>in minutes</span>
-                        </div></label>
-                    <input type="number" id ="WorldEventPrepTime" value="30" min=0 max =100000>
-                    <br>
-                    <label for="WorldEventDuration"><div class="tooltip">World Event Duration:
-                            <span class="tooltiptext">This adjust the amount of time a world event will last.<br>in minutes</span>
-                        </div></label>
-                    <input type="number" id ="WorldEventDuration" value="45" min=0 max =100000>
-                    <br>
-                    <label for="WorldEventSpacing"><div class="tooltip">World Event Spacing:
-                            <span class="tooltiptext">This adjust the amount of time in between world events.<br>in minutes</span>
-                        </div></label>
-                    <input type="number" id ="WorldEventSpacing" value="120" min=0 max =100000>
-                    <table id = "WorldEventBuffsToNotUse">
-                        <thead>
-                            <tr>
-                                <th><div class="tooltip">Disable Events
-                            <span class="tooltiptext">To Disable an event from spawning, click an event in the Disable Event Dropdown<br>To remove an event, click the Event in the list</span></div></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-								<td><div class="dropdown"><button class="dropbtn">Disable Event</button><div class="dropdown-content"><input type="button" value="WeatherImmunity" onclick="AddMPCreature(this)"><input type="button" value="LowFoodWaterDrain" onclick="AddMPCreature(this)"><input type="button" value="AutoResurrection" onclick="AddMPCreature(this)"><input type="button" value="AISwarm" onclick="AddMPCreature(this)"><input type="button" value="Nesting" onclick="AddMPCreature(this)"><input type="button" value="GrowthBuff" onclick="AddMPCreature(this)"><input type="button" value="PledgeAmplify" onclick="AddMPCreature(this)"><input type="button" value="Reskin" onclick="AddMPCreature(this)"></div></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="Section" id="Dino1" style="display: none">
-                    <div class="section-header">
-                        Global Dino Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <label for="GrowthRate"><div class="tooltip">Growth Rate:<span class="tooltiptext">This sets how fast your players dinos will grow. the X number is the multiplier to the normal rate</span></div></label>
-                    <select id="GrowthRate">
-                        <option value="EGrowthRate::VerySlow">Very Slow (1/2x)</option>
-				        <option value="EGrowthRate::Slow">Slow (3/4x)</option>
-                        <option selected value="EGrowthRate::Normal">Normal</option>
-                        <option value="EGrowthRate::Fast">Fast(1 1/2x)</option>
-                        <option value="EGrowthRate::VeryFast">Very Fast(2x)</option>
-                    </select>
-					<br>
-					<label for="SkinLockGrowthTreshold"><div class="tooltip">Skin Max growth threshold:
-                            <span class="tooltiptext">This allows setting the max growth before players can no longer edit their skin</span>
-                        </div></label>
-                    <input type="number" id ="SkinLockGrowthTreshold" value=".8" min=.1 max =20>
-                    <br>
-					<label for="MaxTalentsAllowed"><div class="tooltip">Max Talents Allowed:
-                            <span class="tooltiptext">This allows setting the max number of talents your creature can attain<br>Set to -1 to disable<br>creatures that exceed this value must remove talents until they are at this limit</span>
-                        </div></label>
-                    <input type="number" id ="MaxTalentsAllowed" value="-1" min=-1 max =1000000>
-                    <br>
-                    <label for="bDisableResurrections"><div class="tooltip">Disable Resurrections:<span class="tooltiptext">This Enables or Disables The Resurrection system<br>however, it will NOT remove the deities from the map</span></div></label>
-                    <input type="checkbox" id= "bDisableResurrections" >
-                    <br>
-                    <label for="bDisableReincarnations"><div class="tooltip">Disable Reincarnations:<span class="tooltiptext">This Enables or Disables The Reincarnations system<br>however, it will NOT remove the deities from the map</span></div></label>
-                    <input type="checkbox" id= "bDisableReincarnations" >
-                    <br>
-                    <label for="bDisableRevengeKillProtection"><div class="tooltip">Disable Revenge-Kill Protection:<span class="tooltiptext">This Enables or Disables The Revenge Kill system<br>Disableing this will allow players to spawn onto creatures that are close to their last death point</span></div></label>
-                    <input type="checkbox" id= "bDisableRevengeKillProtection" >
-				</div>
-                <div class="Section" id="Dino2" style="display: none">
-                    <div class="section-header">
-                        Per Dino Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <label for="GroupLimit">
-                        <div class="tooltip">Use Hard Group Limits
-                            <span class="tooltiptext">Enabling this will force groups to respect the creature caps.<br>Any young that hatch into a group at cap will automatically be ejected from the group.<br>Leaving this disabled allows groups to exceed the caps,at the cost that when the adults count reaches the limit,a stress debuff will be applied.</span>
-                        </div></label>
-                    <input type="checkbox" id="grouplimit" onchange="HLToggle()">
-                    <table id="dinos" class="limits" >
-                        <thead>
-                            <tr>
-                                <th>Creature</th>
-                                <th id="dinoh" style="padding-left: 20px ; padding-right: 20px">Soft Limit</th>
-                                <th><div class="tooltip">% server population
-									<span class="tooltiptext">This sets a limit for the total number of a certain creature compared to the rest of the server.<br>I.E.:50% on pteranodon means that a max of 50% of the server population can be Pteranodons. anyone that exceeds this will have their growth rate SEVERELY reduced.</span></div></th>
-                                <th><div class="tooltip">Creature Growth Limit
-                                    <span class="tooltiptext">This sets a limit for the Max growth a creature can attain.<br>Hard limited to 20</span></div></th>
-                            <th><div class="tooltip">Pack Soft Cap Start
-								<span class="tooltiptext">This is the growth at which new pack members will start causing the overpacked debuff</span></div></th>
-							<th><div class="tooltip">Pack Soft Cap End
-								<span class="tooltiptext">This is the growth at which new pack members will reach max strength of the overpacked debuff</span></div></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>This Page Requires javascript to function properly. please enable and reload this page</td>
-                                <td><input type="number" value="999" step = 1 style="width:50px"></td>
-                                <td><input type="number" value="100.0" min = 0 max = 100></td>
-								<td><input type="number" value="20.0" min = 0.1 max = 20></td>
-								<td><input type="number" value="0.7" min = 0 max = 20></td>
-								<td><input type="number" value="1.0" min = 0 max = 20></td>
-                            </tr>
-                        </tbody>
-                    </table>
-				</div>
-				<div class="Section" id="Dino3" style="display: none">
-                    <div class="section-header">
-                        Mixed Dino Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                <div>
-                    <b>Mix-Herd Configuration</b>
-                    <br>
-                    <label for="Mixherd">
-                        <div class="tooltip">Use Mix Group Caps
-                            <span class="tooltiptext">  -When Checked, calculation of group caps (both soft and hard) use all members of a group, regardless of species<br>-When Unchecked, calculation of group caps (both soft and hard) use only members of the group that match the species of the player</span>
-                        </div></label>
-                    <input type="checkbox" id="Mixherd">
-                    <br>
-                    <label for="GroupValidate">
-                        <div class="tooltip">Ignore Grouping Validation on Login
-                            <span class="tooltiptext">Enabling this will allow creatures that are not in a valid group listed below to rejoin the group on login. if disabled, any creature that does not match a grouping below will be kicked from their group</span>
-                        </div></label>
-                    <input type="checkbox" id="bForceIgnoreGroupSpeciesCheckOnLogin">
-                    <table id = "MPTable">
-                        <thead>
-                            <tr>
-                                <th>Add Row</th>
-                                <th>Remove Row</th>
-								<th><div class="tooltip">Set Faction
-                            <span class="tooltiptext">Factions:<br>C = Carnivore<br>H = Herbivore<br>A = Aquatic<br>F = Flyer</span></div></th>
-                                <th><div class="tooltip">Creatures
-                            <span class="tooltiptext">To add a Creature to a list, click a Creature in the Add Creature dropdown on that row.<br>To remove a Creature, click the Creature in the list<br>to change the faction of the row, click on the C H A F buttons</span></div></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="button" value="+" onclick="addMPRow(this)"></td>
-                                <td><input type="button" value="x" onclick="RemoveMPRow(this)"></td>
-                                <td><input type="button" value="C" onclick="Setrow(this)" style="background-color:coral"><input type="button" value="H" onclick="Setrow(this)"><input type="button" value="A" onclick="Setrow(this)"><input type="button" value="F" onclick="Setrow(this)"></td>
-								<td><div class="dropdown"><button class="dropbtn">Add Creature</button><div class="dropdown-content"><input type="button" value="Acrocanthosaurus" onclick="AddMPCreature(this)"><input type="button" value="Ichthyovenator" onclick="AddMPCreature(this)"><input type="button" value="Megalosaurus" onclick="AddMPCreature(this)"><input type="button" value="Tyrannosaurus" onclick="AddMPCreature(this)"><input type="button" value="Utahraptor" onclick="AddMPCreature(this)"><input type="button" value="Velociraptor" onclick="AddMPCreature(this)"></div></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                </div>
-                <div class="Section" id="AI" style="display: none">
-                    <div class="section-header">
-                        AI Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <div>
-                    <label for="bDisableAISpawning"><div class="tooltip">Disable AI Spawns:<span class="tooltiptext">This will disable ALL AI spawns. do note, this includes map editer placed spawners</span></div></label>
-                    <input type="checkbox" id= "bDisableAISpawning">
-                    <br>
-                    <label for="AISpawnRateMultiplier"><div class="tooltip">AI Spawn Rate Multiplier
-                            <span class="tooltiptext">Multiplies how often the AI respawn tick happens<br>Lower values will result in more frequent AI respawns.</span>
-                        </div></label>
-                    <input type="number" id ="AISpawnRateMultiplier" value="1.0" min=0 max =100000>
-                    <br>
-                    <label for="AISpawnCapMultiplier"><div class="tooltip">AI Spawn Cap Multiplier
-                            <span class="tooltiptext">Multiplies how many AI are allowed to be active in each Ai spawn region on the map<br>Higher values will result in more AI being present in spawn areas when at the spawn cap</span>
-                        </div></label>
-                    <input type="number" id ="AISpawnCapMultiplier" value="1.0" min=0 max =100000>
-                    <table id = "DisabledAITypes">
-                        <thead>
-                            <tr>
-                                <th><div class="tooltip">Disable AI
-                            <span class="tooltiptext">To Disable an AI from spawning, click a creature in the Disable AI Dropdown<br>To remove a creature, click the creature in the list</span></div></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-								<td><div class="dropdown"><button class="dropbtn">Disable AI</button><div class="dropdown-content"><input type="button" value="Arganodus" onclick="AddMPCreature(this)"><input type="button" value="Auroraceratops" onclick="AddMPCreature(this)"><input type="button" value="HorseshoeCrab" onclick="AddMPCreature(this)"><input type="button" value="Malawania" onclick="AddMPCreature(this)"></div></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-                </div>
-                <div class="Section" id="Section3" style="display: none">
-                    <!-- this will rely HEAVILY on the javascript to create the entries.only the sheer basics are built here.-->
-                    <div class="section-header">
-                        Admin Rank Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <table id="Ranks" class="limits">
-                        <thead>
-                            <tr>
-                                <th><div class="tooltip">Rank name<span class="tooltiptext">Server side names for setting permissions.<br>Cannot contain spaces.<br>You cannot share the same name for multiple levels.</span></div></th>
-                                <th style="padding-left: 10px ; padding-right: 10px"><div class="tooltip" >Rank Level<span class="tooltiptext">The Numeric level of the rank,in ascending order.<br>Multiple ranks cannot be at the same value.<br>Ranks with a higher value inherit the abilities of lower levels.</span></div></th>
-                                <th style="padding-left: 10px ; padding-right: 10px">Remove Row</th>
-                                <th>Add Row Below</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" value="SuperAdmin" onchange="updatename(this)"></td>
-                                <td><input type="number" value="999" step= 1 onwheel="this.blur()" style="width:50px"></td>
-                                <td><input type="button" value="X" disabled></td>
-                                <td><input type="button" value="+" onclick="RankAddRow(this)"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" value="DefaultAdmin" onchange="updatename(this)"></td>
-                                <td><input type="number" value="0" step= 1 onwheel='this.blur()' style="width:50px"></td>
-                                <td><input type="button" value="X" onclick="RankRemoveRow(this)"></td>
-                                <td><input type="button" value="+" onclick="RankAddRow(this)"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="Section" id="Section4" style="display: none">
-                    <div class="section-header">
-                        Command Permissions Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <table id="commands">
-                        <thead>
-                            <tr>
-                                <th>Configuration Variables</th>
-                                <th><div class="tooltip">Minimum Rank<span class="tooltiptext">This is the minimum rank required to use the command. any rank above it will also have access.<br>DO NOT set any of these to blank.</span></div></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">Announce</div>
-                                        <span class="tooltiptext">Allows the usage of Announce</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">BanPlayer</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>BanPlayer<br>UnBanPlayer<br>ListPunishedPlayers<br>GetPunishedPlayers</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">CheckServerData</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>ReqTunnelNodes <br>ReqTunnelEntrances <br>ReqTunnelMeshes <br>ReqTunnelDecorativeMeshes <br>ReqTunnelCollisionMeshes <br>ReqTunnelDespawnTimes <br>ReqTunnelActors</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">ClearBones</div>
-                                        <span class="tooltiptext">allows the usage of ClearAllBones</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">ClearCarcasses</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>DestroyAllCarcasses<br>SpawnCarcass<br>ListCarcasses</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">ControlServer</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>ServerConsoleCommand<br>AddScentToArea<br>RemoveAllScentNodeData</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">ControlWeather</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>FillAllFreshwater<br>Lightning<br>SetDayLength<br>SetWeather ReqWeather<br>ForceStorm<br>Spawnfire<br>ToggleWeatherData<br>PauseWeather<br>SetTimeOfDay<br>MoveTornado<br>KillTornado<br>The following command needs additional perms:<br>SpawnTornado</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">EditFoliage</div>
-                                        <span class="tooltiptext">(Disabled on Titania!)<br>Allows the usage of the Map Editor while in Spectator mode</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">GroupInvitesOnly</div>
-                                        <span class="tooltiptext">Allows Admin Mixpacking</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">Groups</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>DisbandAllGroups<br> Admin Mixpacking</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">GrowEntity</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>SetInBurrow <br>SetModelAngles <br>SetGrowthLevel <br>AddGrowthTime <br>FillAllStats <br>SetStats <br>SetScore</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">KickPlayer</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br> KickPlayer</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">ModifyEggsAndNesting</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>SetGender <br>DisplayHeredity <br>MatePlayers <br>SetFriendship <br>DisplayFriendships <br>DisplayEggs</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">ModifyServerData</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands: <br>DeleteTunnelNetwork <br>RemoveTunnelNetworkDirtPaddies <br>PurgeOrphanData <br>WipePlayerData <br>RemoveAllCarcasses <br>ResetAllFish <br>ResetFish <br>ForceServerSave <br>ForceServerFlush <br>ForceServerLoad</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">ModifyTalents</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>SetTalents (to include the 'set x' commands)<br> ListTalentModifiers <br>ListTalentPoints</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">PossessEntity</div>
-                                        <span class="tooltiptext">Allows the usage of PossessEntity</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">RespawnPlayer</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>Respawn<br>RestoreDeadEntity<br>ResurrectPlayer</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">RestartMap</div>
-                                        <span class="tooltiptext">Allows the usage of RestartLevel</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin" selected>NoAdmin</option>
-                                    <option value="DefaultAdmin">DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">ServerMutePlayer</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br> MutePlayer<br>UnMutePlayer <br>ListPunishedPlayers <br>GetPunishedPlayers</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">SpawnEntity</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>SpawnEntity <br>SpawnEgg <br>MoveTornado <br>KillTornado <br>GiveEgg <br>DestroyEntity<br>The following command needs additional perms:<br>SpawnTornado</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">Teleport</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>Teleport <br>TeleportAt <br>TeleportToP <br>TeleportToMe<br>TeleportPtoP</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <td ><div class="tooltip"><div class="name">UseObserver</div>
-                                        <span class="tooltiptext">Allows the usage of the following commands:<br>SetViewHitboxes <br>EnterSpectate <br>LeaveSpectate <br>TogglePlayerNameTags</span>
-                                    </div></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="Section" id="Section5" style="display: none">
-                    <div class="section-header">
-                        Player Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <p>Note:Leave Staff rank blank if you do not wish to assign a rank,chat tag blank to not assign a tag, and chat color to white to not assign a color</p>
-                    <table id="staff" class="limits">
-                        <thead>
-                            <tr>
-                                <th><div class="tooltip">Steam ID
-                                        <span class="tooltiptext">This is the SteamID64 for the player.<br>If highlighted in red, the id is invalid and needs to be checked</span>
-                                    </div></th>
-                                <th>Staff Rank</th>
-                                <th><div class="tooltip">Chat Tag
-                                        <span class="tooltiptext">This tag is placed right before the name in chat.use it to identify Staff/Vips/Special people!<br>Leave blank to not set a tag</span>
-                                    </div></th>
-                                <th><div class="tooltip">Name/Tag Color
-                                        <span class="tooltiptext">This will color the tag and name of a user. But will not effect their chat color.<br>Click on the color to change it.<br>Accepts RGB,HSV,HexColor.<br>Leave White to not set a color.<br>will automatically adjust the color/value to the closest accepted by the game</span>
-                                    </div></th>
-                                <th><div class="tooltip">Hex code
-                                        <span class="tooltiptext">This is the Hexcode for the Name/Tag Color<br> Allows copy/paste of colors<br>Accepts HexColor.<br>Leave #ffffff to disable<br>will automatically adjust the color/value to the closest accepted by the game
-                                    </span>
-                                    </div>
-                                <th>Delete Line</th>
-                                <th>Add Line</th>
-                                <th>Steam Profile</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="number" value="76561197994229267" onchange="validateid(this)" onwheel="this.blur()"></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                                <td><input type="text" value="Developer"></td>
-                                <td><input type="color" value="#ff3300" onchange="ValidateColor(this)"></td>
-                                <td><input type = "text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" onchange ="ValidateColor(this)" size=7 maxlength="7" value="#ff3300" style="vertical-align: middle"></td>
-                                <td><input type="button" value="X" disabled></td>
-                                <td><input type="button" value="+" onclick="StaffAddRow(this)"></td>
-                                <td><a href="https://steamcommunity.com/id/Predatoria/" target="_blank">Predatoria</a></td>
-                            </tr>
-                            <tr>
-                                <td><input type="number" value="76561198122870810" onchange="validateid(this)" onwheel="this.blur()"></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" selected>DefaultAdmin</option>
-                                    </select></td>
-                                <td><input type="text" value="Developer"></td>
-                                <td><input type="color" value="#00b2b2" onchange="ValidateColor(this)"></td>
-                                <td><input type = "text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" onchange ="ValidateColor(this)" size=7 maxlength="7" value="#00b2b2" style="vertical-align: middle"></td>
-                                <td><input type="button" value="X" onclick="StaffRemoveRow(this)"></td>
-                                <td><input type="button" value="+" onclick="StaffAddRow(this)"></td>
-                                <td><a href="https://steamcommunity.com/id/Soals/" target="_blank">Soals</a></td>
-                            </tr>
-                            <tr>
-                                <td><input type="number" value="76561198077984700" onchange="validateid(this)" onwheel="this.blur()"></td>
-                                <td><select  name="Ranks">
-                                    <option value=" "selected> </option>
-                                    <option value="NoAdmin">NoAdmin</option>
-                                    <option value="DefaultAdmin" >DefaultAdmin</option>
-                                    </select></td>
-                                <td><input type="text" value="Tech Admin"></td>
-                                <td><input type="color" value="#000fff" onchange="ValidateColor(this)"></td>
-                                <td><input type = "text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" onchange ="ValidateColor(this)" size=7 maxlength="7" value="#000fff" style="vertical-align: middle"></td>
-                                <td><input type="button" value="X"></td>
-                                <td><input type="button" value="+" onclick="StaffAddRow(this)"></td>
-                                <td><a href="https://steamcommunity.com/id/cleafspear/" target="_blank">Cleafspear</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="Section" id="Section6" style="display: none">
-                    <div class="section-header">
-                        Advanced Configuration
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                    <p>This section contains less often used configuration settings, or setting found under different headers. only change these setting if you understand the risk!</p>
-                    <label for="Autosave">Ausosave frequency:</label>
-                    <input type="number" id="asave"value="135" onwheel="this.blur()" style="width:50px">
-                    <label for="Autosave">Seconds</label>
-                    <p><b>Rcon (Remote Console) settings:</b><i>(Beta, not fully implemented yet)</i></p>
-                    <label for="enableRcon"><div class="tooltip">Enable Rcon
-                        <span class="tooltiptext">This will enable Rcon output from the server to 3rd party Rcon clients</span></div></label>
-                    <input type="checkbox" id="enableRcon" onchange="SHSubSection('Rcon')">
-                    <div id="Rcon" style="display: none">
-                        <label for="RconPort"><div class="tooltip">Rcon Port Number:
-                            <span class="tooltiptext">This is the port used to communicate remotely with the server via either the dedicated RCon tool or Scripts.</span>
-                        </div></label>
-                        <input type="number" id="RconPort" value=27015 min=1024 max=65536 onwheel="this.blur()">
-                        <br>
-                        <label for="Rconip"><div class="tooltip">Rcon Ip Address:
-                                <span class="tooltiptext">This is the Ip address you want the RCon to be connected via. default is 127.0.0.1(localhost)</span>
-                            </div></label>
-                        <input type="text" id="Rconip" value="127.0.0.1" minlegnth="7" maxlength="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$"><!--IPv4 only pattern matching. rcon isnt setup to do IPv6-->
-                    </div>
-                    <p><b>Discord Webhooks settings:</b></p>
-                    <label for="DiscordInt"><div class="tooltip">Enable Discord Webhooks
-                        <span class="tooltiptext">This will enable the Discord intergration. this is a WebHooks based system, you will need to use Channel Webhooks for this to work!</span></div></label>
-                    <input type="checkbox" id="GameReporter" onchange="SHSubSection('DiscordIntergration')">
-                    <div id="DiscordIntergration" style="display: none">
-                        <br>
-                        
-                        <label ><div class="tooltip">Chat Log:
-                                <span class="tooltiptext">This is the webhook to the channel you want Chat to go to.</span>
-                            </div></label>
-                        <input type="checkbox" id="bUseChatWebhook" onchange="SHSubSection('DiscordChat')">
-                        <div id = "DiscordChat" style="display: none">
-                            <label ><div class="tooltip">Chat Log Hook:
-                                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
-                            </div></label>
-                            <input type="text" id="ChatReportDiscordWebhook" value = "" onchange="SanatizeHookInput(this)" style="width:1000px">
-                            <button><div class="tooltip" onclick="TestWebhook('ChatReportDiscordWebhook','ChatReportIconURL','Chat Webhook')">Test Webhook...
-                                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
-                            </div></button>
-                            <br>
-                            <label ><div class="tooltip">Chat Log Icon:
-                                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
-                                </div></label>
-                            <input type="text" id="ChatReportIconURL" value = "" style="width:1000px">
-                            <br>
-                            <label ><div class="tooltip">Chat Log Format:
-                                <span class="tooltiptext">This is the Format used by the server to display messages posted in the webhooks</span>
-                            </div></label>
-                            <input type="text" id="ChatWebhookFormatStyle" value = "[:x01]<{PlayerInfo}>[:x01] <ChatMode={ChatMode}> **>** _{msg}_" style="width:1000px">
-							<button><div class="tooltip" onclick="DefaultData('ChatWebhookFormatStyle','[:x01]<{PlayerInfo}>[:x01] <ChatMode={ChatMode}> **>** _{msg}_')">Default Format...
-                                <span class="tooltiptext">Clicking this will default the message format</span>
-                            </div></button>
-                        </div>
-                        <br>
-                        <label ><div class="tooltip">Combat Log:
-                                <span class="tooltiptext">This is the webhook to the channel you want the Combat Log to go to.</span>
-                            </div></label>
-                        <input type="checkbox" id="bUseCombatActivityWebhook" onchange="SHSubSection('DinoCombat')">
-                        <div id = "DinoCombat" style="display: none">
-                            <label ><div class="tooltip">Combat Log Hook:
-                                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
-                            </div></label>
-                            <input type="text" id="CombatActivityDiscordWebhook" value = "" onchange="SanatizeHookInput(this)" style="width:1000px">
-                            <button><div class="tooltip" onclick="TestWebhook('CombatActivityDiscordWebhook','CombatActivityDiscordIconURL','Combat Webhook')">Test Webhook...
-                                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
-                            </div></button>
-                            <br>
-                            <label ><div class="tooltip">Combat Log Icon:
-                                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
-                                </div></label>
-                            <input type="text" id="CombatActivityDiscordIconURL" value = "" style="width:1000px">
-                        </div>
-                        <br>
-                        <label ><div class="tooltip">Connection Log:
-                                <span class="tooltiptext">This is the webhook to the channel you want Connects/Disconnects to go to.</span>
-                            </div></label>
-                        <input type="checkbox" id="bUseLoginReportWebhook" onchange="SHSubSection('DiscordConnect')">
-                        <div id = "DiscordConnect" style="display: none">
-                            <label ><div class="tooltip">Connection Log Hook:
-                                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
-                            </div></label>
-                        <input type="text" id="LoginDiscordWebhook" value = "" onchange="SanatizeHookInput(this)" style="width:1000px">
-                            <button><div class="tooltip" onclick="TestWebhook('LoginDiscordWebhook','LoginDiscordIconURL','Login Webhook')">Test Webhook...
-                                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
-                            </div></button>
-                            <br>
-                            <label ><div class="tooltip">Connection Log Icon:
-                                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
-                                </div></label>
-                            <input type="text" id="LoginDiscordIconURL" value = "" style="width:1000px">
-                            <br>
-                            <label ><div class="tooltip">Login Format:
-                                <span class="tooltiptext">This is the Format used by the server to display messages posted in the webhooks</span>
-                            </div></label>
-                            <input type="text" id="LoginReportFormatStyle" value = "Player [:x01]<{PlayerInfo}>[:x01] joined server _{Server}_\n----" style="width:1000px">
-							<button><div class="tooltip" onclick="DefaultData('LoginReportFormatStyle','Player [:x01]<{PlayerInfo}>[:x01] joined server _{Server}_\\n----')">Default Format...
-                                <span class="tooltiptext">Clicking this will default the message format</span>
-                            </div></button>
-                            <br>
-                            <label ><div class="tooltip">Logout Format:
-                                <span class="tooltiptext">This is the Format used by the server to display messages posted in the webhooks</span>
-                            </div></label>
-                            <input type="text" id="LogoutReportFormatStyle" value = "Player [:x01]<{PlayerInfo}>[:x01] left server _{Server}_, played for {Hours} hours and {Minutes} minutes.\\n----" style="width:1000px">
-							<button><div class="tooltip" onclick="DefaultData('LogoutReportFormatStyle','Player [:x01]<{PlayerInfo}>[:x01] left server _{Server}_, played for {Hours} hours and {Minutes} minutes.\\n----')">Default Format...
-                                <span class="tooltiptext">Clicking this will default the message format</span>
-                            </div></button>
-                        </div>
-                        <br>
-                        
-                        <label ><div class="tooltip">Command Log:
-                                <span class="tooltiptext">This is the webhook to the channel you want Admin Commands to go to.</span>
-                            </div></label>
-                        <input type="checkbox" id="bUseAdminCommandUsageWebhook" onchange="SHSubSection('DiscordCommands')">
-                        <div id = "DiscordCommands" style="display: none">
-                            <label ><div class="tooltip">Command Log Hook:
-                                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
-                            </div></label>
-                            <input type="text" id="AdminCmdDiscordWebhook" value = "" onchange="SanatizeHookInput(this)" style="width:1000px">
-                            <button><div class="tooltip" onclick="TestWebhook('AdminCmdDiscordWebhook','AdminCmdDiscordIcon','Command Webhook')">Test Webhook...
-                                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
-                            </div></button>
-                            <br>
-                            <label ><div class="tooltip">Command Log Icon:
-                                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
-                                </div></label>
-                            <input type="text" id="AdminCmdDiscordIcon" value = "" style="width:1000px">
-                            <br>
-                            <label ><div class="tooltip">Command Log Format:
-                                <span class="tooltiptext">This is the Format used by the server to display messages posted in the webhooks</span>
-                            </div></label>
-                            <input type="text" id="AdminCommandUsageFormatStyle" value = "Player [:x01]<{PlayerInfo}>[:x01] used command [:x01]{Cmd}[:x01]\n----" style="width:1000px">
-							<button><div class="tooltip" onclick="DefaultData('AdminCommandUsageFormatStyle','Player [:x01]<{PlayerInfo}>[:x01] used command [:x01]{Cmd}[:x01]\\n----')">Default Format...
-                                <span class="tooltiptext">Clicking this will default the message format</span>
-                            </div></button>
-                        </div>
-                        <br>
-                        <label ><div class="tooltip">Grouping Log:
-                                <span class="tooltiptext">This is the webhook to the channel you want Grouping actions to go to.</span>
-                            </div></label>
-                        <input type="checkbox" id="bUseGroupActivityWebhook" onchange="SHSubSection('DiscordGroup')">
-                        <div id = "DiscordGroup" style="display: none">
-                            <label ><div class="tooltip">Grouping Log Hook:
-                                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
-                            </div></label>
-                            <input type="text" id="GroupActivityDiscordWebhook" value = "" onchange="SanatizeHookInput(this)" style="width:1000px">
-                            <button><div class="tooltip" onclick="TestWebhook('GroupActivityDiscordWebhook','GroupActivityDiscordIconURL','Grouping Webhook')">Test Webhook...
-                                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
-                            </div></button>
-                            <br>
-                        
-                            <label ><div class="tooltip">Grouping Log Icon:
-                                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
-                                </div></label>
-                            <input type="text" id="GroupActivityDiscordIconURL" value = "" style="width:1000px">
-                        </div>
-                        <br>
-                        <label ><div class="tooltip">Event Log:
-                                <span class="tooltiptext">This is the webhook to the channel you want World Events to go to.</span>
-                            </div></label>
-                        <input type="checkbox" id="bUseEventsWebhook" onchange="SHSubSection('EventsWebhook')">
-                        <div id = "EventsWebhook" style="display: none">
-                            <label ><div class="tooltip">Events Log Hook:
-                                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
-                            </div></label>
-                            <input type="text" id="EventsDiscordWebhook" value = "" onchange="SanatizeHookInput(this)" style="width:1000px">
-                            <button><div class="tooltip" onclick="TestWebhook('EventsDiscordWebhook','EventsDiscordIconURL','Event Webhook')">Test Webhook...
-                                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
-                            </div></button>
-                            <br>
-                        
-                            <label ><div class="tooltip">Events Log Icon:
-                                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
-                                </div></label>
-                            <input type="text" id="EventsDiscordIconURL" value = "" style="width:1000px">
-                        </div>
-                    </div>
-                </div>
-                <div class="Section" id="Final" style="display: none">
-                    <div class="section-header">
-                        Configuration Output
-                        <span class="close" onclick="topFunction()">Top ↑</span>
-                    </div>
-                <input type="button" value="Generate Game.ini below" onclick="GenertateTXT()">
-                <input type="button" value="Download Game.ini" onclick="GenerateFile()">
-                <br>
-                <p>Generate Game.ini will compile all the setting in the textarea below, and Download Game.ini will download a complete, ready to go file. When changing a setting, you must re-generate the ini by clicking a button above.</p>
-                <textarea rows="30" cols="120" style="scroll-behavior: auto ;resize: horizontal" id="Output" readonly>Click Generate Game.ini to output your config here,or click Download Game.ini to download a ready to insert file</textarea>
-                </div>
-            </div>
-        </div>
-        <footer class="footer">
-            <div class='wrap'>
-                <div class='Fsectionl'>Built and maintained by Cleafspear<br><a id="ConsoleButton" 
-role="button" href="#" onclick="ToggleConsole()">Open Debug Console</a></div>
-                <div class='Fsectionr'> Issues?/Feature request? submit <a href="https://github.com/cleafspear/cleafspear.github.io/" target="_blank">here on github.</a>
-                <br>
-                Steam API Provided by Raptor Systems US</div>
-                <div class='Fsectionc'>This webapp contains no tracking for itself or 3rd party providers.<br>This page is covered under the <a href="https://opensource.org/licenses/MIT" target="_blank">Open Source MIT licence</a></div>
-                <div id="Console" style="display: none">
-                    Console Output:
-                    <br>
-                    <textarea id="ConsoleArea" draggable="false" style="width: 100% ;height: 80px; resize: vertical"  readonly></textarea>
-                </div>
-            </div>
-        </footer>
-    </body>
-</html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
+  <title>Beasts of Bermuda Server Configuration Generator and Editor</title>
+  <meta name="description" content="Specialized tool designed for server administrators and gamers. It simplifies the process of creating, customizing, and managing server configurations.">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="main.css">
+
+  <!-- JavaScript -->
+  <script type="text/javascript" src="mainjs.js"></script>
+  <script type="text/javascript" src="generate.js"></script>
+  <script type="text/javascript" src="upload.js"></script>
+</head>
+<body>
+  <div id="loadHeader" style="display: none">
+    <p style="align-self: center ; text-align: center; background-color: red">Loading Data: Please wait while we retrieve and populate the information from your configuration file.</p>
+  </div>
+  <div class="content">
+    <div class="headers">
+      <!-- Title and headers -->
+      <h1 style="margin-top:0;">Beast of Bermuda Server Configuration Tool</h1>
+      <strong>This Configuration Generator and Editor is fully compatible with game server version 1.2.0405</strong>
+      <br />
+      <div class="tooltip">Note: Hover over any text with a dashed underline to view additional information.
+      <span class="tooltiptext"> This can help clarify any questions or confusion you may have.</span></div>
+      <br />
+      <button type="button" class="flipflop off" id="btnload" onclick="OpenLoad()">Load Existing Game.ini</button>
+
+      <!-- load file modal-->
+      <div id="fileModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            Config Load
+            <span class="close" onclick="CloseLoad()">Close &times;</span>
+          </div>
+          <div class="modal-body">
+            <!-- label for="file-upload">Load Existing Game.ini file:</label -->
+            <!--just a note..nothing is actually getting uploaded anywhere outside of the local client. this just lets us have the file avalible to be parsed by the script-->
+            <input type="file" accept=".ini, .txt" onchange="readdata(this)">
+            <br />
+            Load an existing configuration file using the button above, or paste your configuration below and click 'Load'.
+            <br />
+            <textarea rows="30" style="scroll-behavior: auto ;resize: horizontal" id="inputtxt" placeholder="Paste your config here"></textarea>
+            <button id="Submit" class="flipflop off" onclick="SubmitConfig()">Load</button>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <!-- The main buttons section -->
+      Use the buttons below to adjust the server configuration settings.
+      <div class="btnContainer">
+        <button type="button" class="flipflop off" id="BaseGamebutton" onclick="SHfuntion('BaseGame')">Basic Configuration</button>
+        <button type="button" class="flipflop off" id="Weatherbutton" onclick="SHfuntion('Weather')">Weather Settings</button>
+        <button type="button" class="flipflop off" id="Worldbutton" onclick="SHfuntion('World')">World Settings</button>
+        <button type="button" class="flipflop off" id="Dino1button" onclick="SHfuntion('Dino1')">Global Dino Settings</button>
+        <button type="button" class="flipflop off" id="Dino2button" onclick="SHfuntion('Dino2')">Per Dino Settings</button>
+        <button type="button" class="flipflop off" id="Dino3button" onclick="SHfuntion('Dino3')">Mixed Dino Settings</button>
+        <button type="button" class="flipflop off" id="AIbutton" onclick="SHfuntion('AI')">AI Settings</button>
+        <button type="button" class="flipflop off" id="Section3button" onclick="SHfuntion('Section3')">Admin Rank Settings</button>
+        <button type="button" class="flipflop off" id="Section4button" onclick="SHfuntion('Section4')">Command Settings</button>
+        <button type="button" class="flipflop off" id="Section5button" onclick="SHfuntion('Section5')">Player Settings</button>
+        <button type="button" class="flipflop off" id="Section6button" onclick="SHfuntion('Section6')">Advanced Settings</button>
+        <button type="button" class="flipflop off" id="Finalbutton" onclick="SHfuntion('Final')">Configuration Output</button>
+      </div>
+    </div>
+
+    <!-- The main body section -->
+    <div class="SectionContainer">
+
+      <!---------------------------------------------------------------------------------------------------------------------------->
+      <!-- Basic Configuration -->
+      <div class="Section" id="BaseGame" style="display: none">
+        <div class="section-header">
+          Basic Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+
+        <!-- Map -->
+        <label for="maps">Map:</label>
+        <!-- Selector for the map. add maps and define the internal names in these options-->
+        <select id="maps">
+          <option value="Ancestral_Plains">Ancestral Plains</option>
+          <option value="Ancestral_Plains_Canvas">Ancestral Plains (Canvas)</option>
+          <option value="Bloodbath">Bloodbath</option>
+          <option value="DM_Caldera_Canvas">Caldera (Canvas)</option>
+          <option value="DM_Caldera">Caldera (DeathMatch)</option>
+          <option value="Forest_Island">Forest Island</option>
+          <option value="Forest_Island_Canvas">Forest Island (Canvas)</option>
+          <option selected value="islatitania">Isla Titania</option>
+          <option value="Rival_Shores">Rival Shores</option>
+          <option value="Rival_Shores_Canvas">Rival Shores (Canvas)</option>
+          <option value="BB_Test_Map">Test Map (Debug Map)</option>
+          <option value="Test_Performance">Test Performance (Testing Map)</option>
+          <option value="Tropical_Atoll">Tropical Atoll</option>
+          <option value="Volcano_Bay">Volcano Bay</option>
+        </select>
+        <br />
+
+        <!-- Game Mode -->
+        <label for="gamemode">
+          <span class="tooltip">
+            Game Mode:
+            <span class="tooltiptext">
+              <strong>Life Cycle:</strong> Grow and reproduce!<br />
+              <strong>Combat:</strong> Fight to the Death!<br />
+              <strong>Free Roam:</strong> Explore and chat!
+            </span>
+          </span>
+        </label>
+        <select id="gamemode">
+          <option value="Life_Cycle">Life Cycle</option>
+          <option value="Combat">Combat</option>
+          <option value="Free_Roam">Free Roam</option>
+        </select>
+        <br />
+
+        <!-- Game Experience -->
+        <label for="PreferredGameExperience">
+          <span class="tooltip">
+            Game Experience:
+            <span class="tooltiptext">
+              <strong>PvPvE:</strong> Classic survival mode<br />
+              <strong>PvP:</strong> Server enables enhanced PvP features<br />
+              <strong>PvE:</strong> Server disables intimidation and damage, with PvP available only through dueling (Titania server overrides this setting to PvPvE)
+            </span>
+          </span>
+        </label>
+        <select id="PreferredGameExperience">
+          <option value="EGameExperience::PvPvE">PvPvE</option>
+          <option value="EGameExperience::PvP">PvP</option>
+          <option value="EGameExperience::PvE">PvE</option>
+        </select>
+        <br />
+
+        <!-- Food Drain Difficulty -->
+        <label for="FoodDrainDifficulty">
+          <span class="tooltip">
+            Food Drain Difficulty:
+            <span class="tooltiptext">
+              <strong>Easy:</strong> Half the normal food drain rate<br />
+              <strong>Normal:</strong> Default food drain rate<br />
+              <strong>Hard:</strong> Double the food drain rate, making survival more challenging<br />
+              <strong>Expert:</strong> Triple the food drain rate, intended for hardcore players
+            </span>
+          </span>
+        </label>
+        <select id="FoodDrainDifficulty">
+          <option value="EGameDifficulty::Easy">Easy</option>
+          <option selected value="EGameDifficulty::Normal">Normal</option>
+          <option value="EGameDifficulty::Hard">Hard</option>
+          <option value="EGameDifficulty::Expert">Expert</option>
+        </select>
+        <br />
+
+        <!-- Water Drain Difficulty -->
+        <label for="WaterDrainDifficulty">
+          <span class="tooltip">
+            Water Drain Difficulty:
+            <span class="tooltiptext">
+              <strong>Easy:</strong> Half the normal water drain rate<br />
+              <strong>Normal:</strong> Default water drain rate<br />
+              <strong>Hard:</strong> Double the normal water drain rate, making survival more challenging<br />
+              <strong>Expert:</strong> Triple the normal water drain rate, intended for hardcore players
+            </span>
+          </span>
+        </label>
+        <select id="WaterDrainDifficulty">
+          <option value="EGameDifficulty::Easy">Easy</option>
+          <option selected value="EGameDifficulty::Normal">Normal</option>
+          <option value="EGameDifficulty::Hard">Hard</option>
+          <option value="EGameDifficulty::Expert">Expert</option>
+        </select>
+        <br />
+
+        <!-- Water Dirtiness Difficulty -->
+        <label for="WaterDirtinessDifficulty">
+          <span class="tooltip">
+            Water Dirtiness Difficulty:
+            <span class="tooltiptext">
+              <strong>Easy:</strong> Half the normal water dirtiness speed rate<br />
+              <strong>Normal:</strong> Default water dirtiness speed rate<br />
+              <strong>Hard:</strong> Double the normal water dirtiness speed rate, making survival more challenging<br />
+              <strong>Expert:</strong> Triple the normal water dirtiness speed rate, intended for hardcore players
+            </span>
+          </span>
+        </label>
+        <select id="WaterDirtinessDifficulty">
+          <option value="EGameDifficulty::Easy">Easy</option>
+          <option selected value="EGameDifficulty::Normal">Normal</option>
+          <option value="EGameDifficulty::Hard">Hard</option>
+          <option value="EGameDifficulty::Expert">Expert</option>
+        </select>
+        <br />
+        <br />
+
+        <!-- Discord Server Link -->
+        <label for="discordenable">Discord Server Link</label>
+        <input class="checkbox" type="checkbox" id="discordenable" onchange="SHSubSection('discord')">
+        <label for="discordenable" class="switch"></label>
+        <br />
+        <div id="discord" style="display: none">
+          <label>
+            <span class="tooltip">
+              Discord Join ID
+              <span class="tooltiptext">
+                This is only the code following "discord.gg/" in the invite link.<br />
+                The "discord.gg/" portion will be automatically removed.
+              </span>
+            </span>
+          </label>
+          <input type="text" id="discordlink" onchange="SanatizeInvite(this)">
+          <br />
+        </div>
+
+        <!-- Steam Group -->
+        <label for="steamgroup">Steam Group Required:</label>
+        <input class="checkbox" type="checkbox" id="steamgroup" onchange="SHSubSection('steam')">
+        <label for="steamgroup" class="switch"></label>
+        <br />
+        <div id="steam" style="display: none">
+          <label>
+            <span class="tooltip">
+              Steam Group ID
+              <span class="tooltiptext">
+                This is the unique "long" Steam name of your group that users need to join.
+              </span>
+            </span>
+          </label>
+          <input type="text" id="steamname">
+          <br />
+        </div>
+
+        <!-- MOTD -->
+        <label for="motd">
+          <span class="tooltip">
+            Use MOTD (message of the day)
+            <span class="tooltiptext">
+              Make Sure to have the file in place per the
+              <a href="https://wiki.beastsofbermuda.com/Message_of_the_day" target="_blank">wiki page!</a>
+            </span>
+          </span>
+        </label>
+        <input class="checkbox" type="checkbox" id="motd">
+        <label for="motd" class="switch"></label>
+        <br />
+
+        <!-- Console -->
+        <label for="console">
+          <span class="tooltip">
+            Console Lock
+            <span class="tooltiptext">
+              Unchecking this setting will enable open console mode on your server,
+              bypassing all command restrictions. All players will be granted admin privileges and access to all commands.
+            </span>
+          </span>
+        </label>
+        <input class="checkbox" type="checkbox" id="console" checked>
+        <label for="console" class="switch"></label>
+        <br />
+
+        <!-- Reserved Admin Slots -->
+        <label for="slots">Reserved Admin Slots:</label>
+        <input type="number" id="slots" value=2 step=1 style="width:40px">
+        <label for="slots" class="switch"></label>
+        <br />
+
+        <!-- Disable Global Chat -->
+        <label for="gchat">Disable Global Chat</label>
+        <input class="checkbox" type="checkbox" id="gchat">
+        <label for="gchat" class="switch"></label>
+        <br />
+
+        <!-- Disable Local Chat -->
+        <label for="lchat">Disable Local Chat</label>
+        <input class="checkbox" type="checkbox" id="lchat">
+        <label for="lchat" class="switch"></label>
+        <br />
+
+        <!-- Disable Leaderboards -->
+        <label for="bDisableLeaderboard">Disable Leaderboards</label>
+        <input class="checkbox" type="checkbox" id="bDisableLeaderboard">
+        <label for="bDisableLeaderboard" class="switch"></label>
+        <br />
+
+        <!-- Enable Auto Resurrection -->
+        <label for="bDisableCharacterDeath">
+          <span class="tooltip">
+            Enable Auto Resurrection
+            <span class="tooltiptext">
+              Enabling this will automatically resurrect any dinosaur that dies.<br />
+              This functions similarly to an admin resurrection, where no growth is lost, and no penalties are incurred.
+            </span>
+          </span>
+        </label>
+        <input class="checkbox" type="checkbox" id="bDisableCharacterDeath">
+        <label for="bDisableCharacterDeath" class="switch"></label>
+        <br />
+
+        <!-- Disable Random Names -->
+        <label for="bDisableUseRandomName">
+          <span class="tooltip">
+            Disable Random Names
+            <span class="tooltiptext">
+              When enabled, this prevents the use of the console command <code>UseRandomName</code>.
+            </span>
+          </span>
+        </label>
+        <input class="checkbox" type="checkbox" id="bDisableUseRandomName">
+        <label for="bDisableUseRandomName" class="switch"></label>
+      </div>
+      <!---------------------------------------------------------------------------------------------------------------------------->
+
+      <!---------------------------------------------------------------------------------------------------------------------------->
+
+      <div class="Section" id="Weather" style="display: none">
+        <div class="section-header">
+          Weather Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <label><span class="tooltip">Enable Forest fires:<span class="tooltiptext">This will effect storm and admin spawned fires.</span></span></label>
+        <input class="checkbox" type="checkbox" id="fire" checked>
+        <br />
+        <label><span class="tooltip">Cap Storm Surge:<span class="tooltiptext">This Keeps flooding from getting too high on the map. disable to allow Superfloods</span></span></label>
+        <input class="checkbox" type="checkbox" id="StormS" checked>
+        <br />
+        <label for="StormSurgeMultiplier">
+          <span class="tooltip">
+            Storm Surge Multiplier:
+            <span class="tooltiptext">This adjust how high the surge from flooding will occur.<br />setting to 0 will disable flooding<br />setting above 1 will multiply the height the flooding will progress</span>
+          </span>
+        </label>
+        <input type="number" id="StormSurgeMultiplier" value="1.0" min=0 max=100>
+        <br />
+        <label><span class="tooltip">Spawn Tornados:<span class="tooltiptext">This Enables or Disables tornado spawning during High Wind Storms</span></span></label>
+        <input class="checkbox" type="checkbox" id="bSpawnsTornados" checked>
+        <br />
+        <label><span class="tooltip">Stressful Storms:<span class="tooltiptext">This Enables or Disables Stress caused by Severe Weather</span></span></label>
+        <input class="checkbox" type="checkbox" id="bStormsCauseStress" checked>
+        <br />
+        <label for="SpeedMod">
+          <span class="tooltip">
+            Weather System Speed:
+            <span class="tooltiptext">This adjust how fast the weather system will run. a higher value will result in faster storms/Events.<br />A lower value will result in drawn out storms.</span>
+          </span>
+        </label>
+        <input type="number" id="SpeedMod" value="1.0" min=0 max=100>
+        <br />
+        <label for="IntensityModifier">
+          <span class="tooltip">
+            Weather System Intensity:
+            <span class="tooltiptext">This adjust how Severe the weather system will be. a higher value will result in Extreme storms/Events.<br />A lower value will result in calmer, more tame weather.</span>
+          </span>
+        </label>
+        <input type="number" id="IntensityModifier" value="1.0" min=0 max=10>
+        <br />
+        <label for="StormSpacingMultiplier">
+          <span class="tooltip">
+            Weather System Period:
+            <span class="tooltiptext">This adjust how often the weather system will spawn storms. a lower value will result in storms occurring one right after another.<br />A higher value will result in long periods between events.</span>
+          </span>
+        </label>
+        <input type="number" id="StormSpacingMultiplier" value="1.0" min=0 max=10>
+        <br />
+        <label for="RainCommonness">
+          <span class="tooltip">
+            Weather Type- Rain:
+            <span class="tooltiptext">This adjust how often the weather system will spawn this weather event. a higher value will result in Rainstorms occurring more frequently, in relation to other storm types<br />A lower value will result in this weather type occurring less frequently.<br /> setting this to 0 will disable this type of weather</span>
+          </span>
+        </label>
+        <input type="number" id="RainCommonness" value="5" min=0 max=100>
+        <br />
+        <label for="FogCommonness">
+          <span class="tooltip">
+            Weather Type- Fog:
+            <span class="tooltiptext">This adjust how often the weather system will spawn this weather event. a higher value will result in Rainstorms occurring more frequently, in relation to other storm types<br />A lower value will result in this weather type occurring less frequently.<br /> setting this to 0 will disable this type of weather</span>
+          </span>
+        </label>
+        <input type="number" id="FogCommonness" value="2" min=0 max=100>
+        <br />
+        <label for="OvercastCommonness">
+          <span class="tooltip">
+            Weather Type- Overcast:
+            <span class="tooltiptext">This adjust how often the weather system will spawn this weather event. a higher value will result in Rainstorms occurring more frequently, in relation to other storm types<br />A lower value will result in this weather type occurring less frequently.<br /> setting this to 0 will disable this type of weather</span>
+          </span>
+        </label>
+        <input type="number" id="OvercastCommonness" value="2" min=0 max=100>
+        <br />
+        <label for="DryLightningCommonness">
+          <span class="tooltip">
+            Weather Type- Dry Lightning:
+            <span class="tooltiptext">This adjust how often the weather system will spawn this weather event. a higher value will result in Rainstorms occurring more frequently, in relation to other storm types<br />A lower value will result in this weather type occurring less frequently.<br /> setting this to 0 will disable this type of weather</span>
+          </span>
+        </label>
+        <input type="number" id="DryLightningCommonness" value="1" min=0 max=100>
+      </div>
+      <div class="Section" id="World" style="display: none">
+        <div class="section-header">
+          World Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <label for="DayLegnth">Day Length:</label>
+        <input type="number" id="daycycle" value="4441" data-state=0 style="width:50px" onwheel="this.blur()">
+        <select id="DayMulti" onchange="RecomputeTime('daycycle', this)">
+          <option value=0 selected>Seconds</option>
+          <option value=1>Minutes</option>
+          <option value=2>Hours</option>
+          <option value=3>Days</option>
+        </select>
+        <br />
+        <label for="carcassrate">
+          <span class="tooltip">
+            Carcass Spawn Rate:
+            <span class="tooltiptext">This multiplies the amount of total meat spawned over time on the map. max is 8x normal</span>
+          </span>
+        </label>
+        <input type="number" id="carcassrate" value="1.0" min=0 max=8>
+        <br />
+        <label for="carcassratio">
+          <span class="tooltip">
+            Carcass Spawn Ratio:
+            <span class="tooltiptext">This adjust the size vs number of carcasses spawned.<br />A value closer to 0 will cause carcasses to spawn large, but rarely.<br />A value closer to 2 will cause carcasses to spawn small, but often.</span>
+          </span>
+        </label>
+        <input type="number" id="carcassratio" value="1.0" min=0 max=2>
+        <br />
+        <label for="TunnelLifetime">
+          <span class="tooltip">
+            Tunnel Despawn time:
+            <span class="tooltiptext">This determines the length of time a burrow network will remain after its last edit.<br />Please note, the tunnels are checked every 5 minutes, and there is a 5 minute delay when the timer hits 0 before it removes a network.</span>
+          </span>
+        </label>
+        <input type="number" id="TunnelLifetime" min=0 value=3 step=1 data-state=3 onwheel="this.blur()" style="width:50px">
+        <select id="TunnelMulti" onchange="RecomputeTime('TunnelLifetime', this)">
+          <option value=0>Seconds</option>
+          <option value=1>Minutes</option>
+          <option value=2>Hours</option>
+          <option value=3 selected>Days</option>
+        </select>
+        <br />
+        <label><span class="tooltip">Disable Map Portals:<span class="tooltiptext">This will remove any portals on the map.</span></span></label>
+        <input class="checkbox" type="checkbox" id="bPortalsDisabled">
+        <br />
+        <label><span class="tooltip">Disable Restless Debuff:<span class="tooltiptext">This will remove the debuff while in caves</span></span></label>
+        <input class="checkbox" type="checkbox" id="bDisableRestlessDebuff">
+        <br />
+        <label><span class="tooltip">Disable Random Eggs Spawns:<span class="tooltiptext">This will remove the abandoned eggs that spawn around the map</span></span></label>
+        <input class="checkbox" type="checkbox" id="bDisableRandomEggSpawns" onchange="SHSubSection('Eggs')">
+        <br />
+        <div id="Eggs" style="display: block">
+          <label><span class="tooltip">Egg Spawn Chance:<span class="tooltiptext">This is the chance that a carcass spawn will generate an abandoned egg<br />Setting to 0 will stop egg spawning<br /> Setting to 1 will always spawn eggs instead of carcasses</span></span></label>
+          <input type="number" id="RandomEggSpawnChance" value=.05>
+          <br />
+        </div>
+
+        <label for="OceanHeightAdd">
+          <span class="tooltip">
+            Ocean Height Adjustment:
+            <span class="tooltiptext">This adjust the default level of the ocean.<br />setting it positive will increase the default height<br />setting it negative will lower the default height</span>
+          </span>
+        </label>
+        <input type="number" id="OceanHeightAdd" value="1.0" min=-1000000 max=1000000>
+        <br />
+        <label for="FoliageSpawnSpeed">
+          <span class="tooltip">
+            Foliage Spawn Rate:
+            <span class="tooltiptext">This sets the Respawn rate of foliage</span>
+          </span>
+        </label>
+        <select id="FoliageSpawnSpeed">
+          <option value="EGrowthRate::VerySlow">Very Slow (1/2x)</option>
+          <option value="EGrowthRate::Slow">Slow (3/4x)</option>
+          <option selected value="EGrowthRate::Normal">Normal</option>
+          <option value="EGrowthRate::Fast">Fast(1 1/2x)</option>
+          <option value="EGrowthRate::VeryFast">Very Fast(2x)</option>
+        </select>
+        <br />
+        <label><span class="tooltip">Enable World Events:<span class="tooltiptext">This will add the normally occuring world events that spawn occasionally on the map</span></span></label>
+        <input class="checkbox" type="checkbox" id="bSpawnWorldEvents">
+        <br />
+        <label for="WorldEventPrepTime">
+          <span class="tooltip">
+            World Event Prep time:
+            <span class="tooltiptext">This adjust the amount of time from when a world event spawns to when it starts.<br />in minutes</span>
+          </span>
+        </label>
+        <input type="number" id="WorldEventPrepTime" value="30" min=0 max=100000>
+        <br />
+        <label for="WorldEventDuration">
+          <span class="tooltip">
+            World Event Duration:
+            <span class="tooltiptext">This adjust the amount of time a world event will last.<br />in minutes</span>
+          </span>
+        </label>
+        <input type="number" id="WorldEventDuration" value="45" min=0 max=100000>
+        <br />
+        <label for="WorldEventSpacing">
+          <span class="tooltip">
+            World Event Spacing:
+            <span class="tooltiptext">This adjust the amount of time in between world events.<br />in minutes</span>
+          </span>
+        </label>
+        <input type="number" id="WorldEventSpacing" value="120" min=0 max=100000>
+        <table id="WorldEventBuffsToNotUse">
+          <thead>
+            <tr>
+              <th>
+                <div class="tooltip">
+                  Disable Events
+                  <span class="tooltiptext">To Disable an event from spawning, click an event in the Disable Event Dropdown<br />To remove an event, click the Event in the list</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="dropdown"><button class="dropbtn">Disable Event</button><div class="dropdown-content"><input type="button" value="WeatherImmunity" onclick="AddMPCreature(this)"><input type="button" value="LowFoodWaterDrain" onclick="AddMPCreature(this)"><input type="button" value="AutoResurrection" onclick="AddMPCreature(this)"><input type="button" value="AISwarm" onclick="AddMPCreature(this)"><input type="button" value="Nesting" onclick="AddMPCreature(this)"><input type="button" value="GrowthBuff" onclick="AddMPCreature(this)"><input type="button" value="PledgeAmplify" onclick="AddMPCreature(this)"><input type="button" value="Reskin" onclick="AddMPCreature(this)"></div></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="Section" id="Dino1" style="display: none">
+        <div class="section-header">
+          Global Dino Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <label><span class="tooltip">Growth Rate:<span class="tooltiptext">This sets how fast your players dinos will grow. the X number is the multiplier to the normal rate</span></span></label>
+        <select id="GrowthRate">
+          <option value="EGrowthRate::VerySlow">Very Slow (1/2x)</option>
+          <option value="EGrowthRate::Slow">Slow (3/4x)</option>
+          <option selected value="EGrowthRate::Normal">Normal</option>
+          <option value="EGrowthRate::Fast">Fast(1 1/2x)</option>
+          <option value="EGrowthRate::VeryFast">Very Fast(2x)</option>
+        </select>
+        <br />
+        <label for="SkinLockGrowthTreshold">
+          <span class="tooltip">
+            Skin Max growth threshold:
+            <span class="tooltiptext">This allows setting the max growth before players can no longer edit their skin</span>
+          </span>
+        </label>
+        <input type="number" id="SkinLockGrowthTreshold" value=".8" min=.1 max=20>
+        <br />
+        <label for="MaxTalentsAllowed">
+          <span class="tooltip">
+            Max Talents Allowed:
+            <span class="tooltiptext">This allows setting the max number of talents your creature can attain<br />Set to -1 to disable<br />creatures that exceed this value must remove talents until they are at this limit</span>
+          </span>
+        </label>
+        <input type="number" id="MaxTalentsAllowed" value="-1" min=-1 max=1000000>
+        <br />
+        <label><span class="tooltip">Disable Resurrections:<span class="tooltiptext">This Enables or Disables The Resurrection system<br />however, it will NOT remove the deities from the map</span></span></label>
+        <input class="checkbox" type="checkbox" id="bDisableResurrections">
+        <br />
+        <label><span class="tooltip">Disable Reincarnations:<span class="tooltiptext">This Enables or Disables The Reincarnations system<br />however, it will NOT remove the deities from the map</span></span></label>
+        <input class="checkbox" type="checkbox" id="bDisableReincarnations">
+        <br />
+        <label><span class="tooltip">Disable Revenge-Kill Protection:<span class="tooltiptext">This Enables or Disables The Revenge Kill system<br />Disableing this will allow players to spawn onto creatures that are close to their last death point</span></span></label>
+        <input class="checkbox" type="checkbox" id="bDisableRevengeKillProtection">
+      </div>
+      <div class="Section" id="Dino2" style="display: none">
+        <div class="section-header">
+          Per Dino Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <label for="GroupLimit">
+          <span class="tooltip">
+            Use Hard Group Limits
+            <span class="tooltiptext">Enabling this will force groups to respect the creature caps.<br />Any young that hatch into a group at cap will automatically be ejected from the group.<br />Leaving this disabled allows groups to exceed the caps,at the cost that when the adults count reaches the limit,a stress debuff will be applied.</span>
+          </span>
+        </label>
+        <input class="checkbox" type="checkbox" id="grouplimit" onchange="HLToggle()">
+        <table id="dinos" class="limits">
+          <thead>
+            <tr>
+              <th>Creature</th>
+              <th id="dinoh" style="padding-left: 20px ; padding-right: 20px">Soft Limit</th>
+              <th>
+                <div class="tooltip">
+                  % server population
+                  <span class="tooltiptext">This sets a limit for the total number of a certain creature compared to the rest of the server.<br />I.E.:50% on pteranodon means that a max of 50% of the server population can be Pteranodons. anyone that exceeds this will have their growth rate SEVERELY reduced.</span>
+                </div>
+              </th>
+              <th>
+                <div class="tooltip">
+                  Creature Growth Limit
+                  <span class="tooltiptext">This sets a limit for the Max growth a creature can attain.<br />Hard limited to 20</span>
+                </div>
+              </th>
+              <th>
+                <div class="tooltip">
+                  Pack Soft Cap Start
+                  <span class="tooltiptext">This is the growth at which new pack members will start causing the overpacked debuff</span>
+                </div>
+              </th>
+              <th>
+                <div class="tooltip">
+                  Pack Soft Cap End
+                  <span class="tooltiptext">This is the growth at which new pack members will reach max strength of the overpacked debuff</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>This Page Requires javascript to function properly. please enable and reload this page</td>
+              <td><input type="number" value="999" step=1 style="width:50px"></td>
+              <td><input type="number" value="100.0" min=0 max=100></td>
+              <td><input type="number" value="20.0" min=0.1 max=20></td>
+              <td><input type="number" value="0.7" min=0 max=20></td>
+              <td><input type="number" value="1.0" min=0 max=20></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="Section" id="Dino3" style="display: none">
+        <div class="section-header">
+          Mixed Dino Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <div>
+          <strong>Mix-Herd Configuration</strong>
+          <br />
+          <label for="Mixherd">
+            <span class="tooltip">
+              Use Mix Group Caps
+              <span class="tooltiptext">  -When Checked, calculation of group caps (both soft and hard) use all members of a group, regardless of species<br />-When Unchecked, calculation of group caps (both soft and hard) use only members of the group that match the species of the player</span>
+            </span>
+          </label>
+          <input class="checkbox" type="checkbox" id="Mixherd">
+          <br />
+          <label for="GroupValidate">
+            <span class="tooltip">
+              Ignore Grouping Validation on Login
+              <span class="tooltiptext">Enabling this will allow creatures that are not in a valid group listed below to rejoin the group on login. if disabled, any creature that does not match a grouping below will be kicked from their group</span>
+            </span>
+          </label>
+          <input class="checkbox" type="checkbox" id="bForceIgnoreGroupSpeciesCheckOnLogin">
+          <table id="MPTable">
+            <thead>
+              <tr>
+                <th>Add Row</th>
+                <th>Remove Row</th>
+                <th>
+                  <div class="tooltip">
+                    Set Faction
+                    <span class="tooltiptext">Factions:<br />C = Carnivore<br />H = Herbivore<br />A = Aquatic<br />F = Flyer</span>
+                  </div>
+                </th>
+                <th>
+                  <div class="tooltip">
+                    Creatures
+                    <span class="tooltiptext">To add a Creature to a list, click a Creature in the Add Creature dropdown on that row.<br />To remove a Creature, click the Creature in the list<br />to change the faction of the row, click on the C H A F buttons</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="button" value="+" onclick="addMPRow(this)"></td>
+                <td><input type="button" value="x" onclick="RemoveMPRow(this)"></td>
+                <td><input type="button" value="C" onclick="Setrow(this)" style="background-color:coral"><input type="button" value="H" onclick="Setrow(this)"><input type="button" value="A" onclick="Setrow(this)"><input type="button" value="F" onclick="Setrow(this)"></td>
+                <td><div class="dropdown"><button class="dropbtn">Add Creature</button><div class="dropdown-content"><input type="button" value="Acrocanthosaurus" onclick="AddMPCreature(this)"><input type="button" value="Ichthyovenator" onclick="AddMPCreature(this)"><input type="button" value="Megalosaurus" onclick="AddMPCreature(this)"><input type="button" value="Tyrannosaurus" onclick="AddMPCreature(this)"><input type="button" value="Utahraptor" onclick="AddMPCreature(this)"><input type="button" value="Velociraptor" onclick="AddMPCreature(this)"></div></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="Section" id="AI" style="display: none">
+        <div class="section-header">
+          AI Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <div>
+          <label><span class="tooltip">Disable AI Spawns:<span class="tooltiptext">This will disable ALL AI spawns. do note, this includes map editer placed spawners</span></span></label>
+          <input class="checkbox" type="checkbox" id="bDisableAISpawning">
+          <br />
+          <label for="AISpawnRateMultiplier">
+            <span class="tooltip">
+              AI Spawn Rate Multiplier
+              <span class="tooltiptext">Multiplies how often the AI respawn tick happens<br />Lower values will result in more frequent AI respawns.</span>
+            </span>
+          </label>
+          <input type="number" id="AISpawnRateMultiplier" value="1.0" min=0 max=100000>
+          <br />
+          <label for="AISpawnCapMultiplier">
+            <span class="tooltip">
+              AI Spawn Cap Multiplier
+              <span class="tooltiptext">Multiplies how many AI are allowed to be active in each Ai spawn region on the map<br />Higher values will result in more AI being present in spawn areas when at the spawn cap</span>
+            </span>
+          </label>
+          <input type="number" id="AISpawnCapMultiplier" value="1.0" min=0 max=100000>
+          <table id="DisabledAITypes">
+            <thead>
+              <tr>
+                <th>
+                  <div class="tooltip">
+                    Disable AI
+                    <span class="tooltiptext">To Disable an AI from spawning, click a creature in the Disable AI Dropdown<br />To remove a creature, click the creature in the list</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="dropdown"><button class="dropbtn">Disable AI</button><div class="dropdown-content"><input type="button" value="Arganodus" onclick="AddMPCreature(this)"><input type="button" value="Auroraceratops" onclick="AddMPCreature(this)"><input type="button" value="HorseshoeCrab" onclick="AddMPCreature(this)"><input type="button" value="Malawania" onclick="AddMPCreature(this)"></div></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="Section" id="Section3" style="display: none">
+        <!-- this will rely HEAVILY on the javascript to create the entries.only the sheer basics are built here.-->
+        <div class="section-header">
+          Admin Rank Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <table id="Ranks" class="limits">
+          <thead>
+            <tr>
+              <th><div class="tooltip">Rank name<span class="tooltiptext">Server side names for setting permissions.<br />Cannot contain spaces.<br />You cannot share the same name for multiple levels.</span></div></th>
+              <th style="padding-left: 10px ; padding-right: 10px"><div class="tooltip">Rank Level<span class="tooltiptext">The Numeric level of the rank,in ascending order.<br />Multiple ranks cannot be at the same value.<br />Ranks with a higher value inherit the abilities of lower levels.</span></div></th>
+              <th style="padding-left: 10px ; padding-right: 10px">Remove Row</th>
+              <th>Add Row Below</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" value="SuperAdmin" onchange="updatename(this)"></td>
+              <td><input type="number" value="999" step=1 onwheel="this.blur()" style="width:50px"></td>
+              <td><input type="button" value="X" disabled></td>
+              <td><input type="button" value="+" onclick="RankAddRow(this)"></td>
+            </tr>
+            <tr>
+              <td><input type="text" value="DefaultAdmin" onchange="updatename(this)"></td>
+              <td><input type="number" value="0" step=1 onwheel='this.blur()' style="width:50px"></td>
+              <td><input type="button" value="X" onclick="RankRemoveRow(this)"></td>
+              <td><input type="button" value="+" onclick="RankAddRow(this)"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="Section" id="Section4" style="display: none">
+        <div class="section-header">
+          Command Permissions Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <table id="commands">
+          <thead>
+            <tr>
+              <th>Configuration Variables</th>
+              <th><div class="tooltip">Minimum Rank<span class="tooltiptext">This is the minimum rank required to use the command. any rank above it will also have access.<br />DO NOT set any of these to blank.</span></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">Announce</div>
+                  <span class="tooltiptext">Allows the usage of Announce</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">BanPlayer</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />BanPlayer<br />UnBanPlayer<br />ListPunishedPlayers<br />GetPunishedPlayers</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">CheckServerData</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />ReqTunnelNodes <br />ReqTunnelEntrances <br />ReqTunnelMeshes <br />ReqTunnelDecorativeMeshes <br />ReqTunnelCollisionMeshes <br />ReqTunnelDespawnTimes <br />ReqTunnelActors</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">ClearBones</div>
+                  <span class="tooltiptext">allows the usage of ClearAllBones</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">ClearCarcasses</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />DestroyAllCarcasses<br />SpawnCarcass<br />ListCarcasses</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">ControlServer</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />ServerConsoleCommand<br />AddScentToArea<br />RemoveAllScentNodeData</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">ControlWeather</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />FillAllFreshwater<br />Lightning<br />SetDayLength<br />SetWeather ReqWeather<br />ForceStorm<br />Spawnfire<br />ToggleWeatherData<br />PauseWeather<br />SetTimeOfDay<br />MoveTornado<br />KillTornado<br />The following command needs additional perms:<br />SpawnTornado</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">EditFoliage</div>
+                  <span class="tooltiptext">(Disabled on Titania!)<br />Allows the usage of the Map Editor while in Spectator mode</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">GroupInvitesOnly</div>
+                  <span class="tooltiptext">Allows Admin Mixpacking</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">Groups</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />DisbandAllGroups<br /> Admin Mixpacking</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">GrowEntity</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />SetInBurrow <br />SetModelAngles <br />SetGrowthLevel <br />AddGrowthTime <br />FillAllStats <br />SetStats <br />SetScore</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">KickPlayer</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br /> KickPlayer</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">ModifyEggsAndNesting</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />SetGender <br />DisplayHeredity <br />MatePlayers <br />SetFriendship <br />DisplayFriendships <br />DisplayEggs</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">ModifyServerData</div>
+                  <span class="tooltiptext">Allows the usage of the following commands: <br />DeleteTunnelNetwork <br />RemoveTunnelNetworkDirtPaddies <br />PurgeOrphanData <br />WipePlayerData <br />RemoveAllCarcasses <br />ResetAllFish <br />ResetFish <br />ForceServerSave <br />ForceServerFlush <br />ForceServerLoad</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">ModifyTalents</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />SetTalents (to include the 'set x' commands)<br /> ListTalentModifiers <br />ListTalentPoints</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">PossessEntity</div>
+                  <span class="tooltiptext">Allows the usage of PossessEntity</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">RespawnPlayer</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />Respawn<br />RestoreDeadEntity<br />ResurrectPlayer</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">RestartMap</div>
+                  <span class="tooltiptext">Allows the usage of RestartLevel</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin" selected>NoAdmin</option>
+                  <option value="DefaultAdmin">DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">ServerMutePlayer</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br /> MutePlayer<br />UnMutePlayer <br />ListPunishedPlayers <br />GetPunishedPlayers</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">SpawnEntity</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />SpawnEntity <br />SpawnEgg <br />MoveTornado <br />KillTornado <br />GiveEgg <br />DestroyEntity<br />The following command needs additional perms:<br />SpawnTornado</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">Teleport</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />Teleport <br />TeleportAt <br />TeleportToP <br />TeleportToMe<br />TeleportPtoP</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="tooltip">
+                  <div class="name">UseObserver</div>
+                  <span class="tooltiptext">Allows the usage of the following commands:<br />SetViewHitboxes <br />EnterSpectate <br />LeaveSpectate <br />TogglePlayerNameTags</span>
+                </div>
+              </td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="Section" id="Section5" style="display: none">
+        <div class="section-header">
+          Player Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <p>Note:Leave Staff rank blank if you do not wish to assign a rank,chat tag blank to not assign a tag, and chat color to white to not assign a color</p>
+        <table id="staff" class="limits">
+          <thead>
+            <tr>
+              <th>
+                <div class="tooltip">
+                  Steam ID
+                  <span class="tooltiptext">This is the SteamID64 for the player.<br />If highlighted in red, the id is invalid and needs to be checked</span>
+                </div>
+              </th>
+              <th>Staff Rank</th>
+              <th>
+                <div class="tooltip">
+                  Chat Tag
+                  <span class="tooltiptext">This tag is placed right before the name in chat.use it to identify Staff/Vips/Special people!<br />Leave blank to not set a tag</span>
+                </div>
+              </th>
+              <th>
+                <div class="tooltip">
+                  Name/Tag Color
+                  <span class="tooltiptext">This will color the tag and name of a user. But will not effect their chat color.<br />Click on the color to change it.<br />Accepts RGB,HSV,HexColor.<br />Leave White to not set a color.<br />will automatically adjust the color/value to the closest accepted by the game</span>
+                </div>
+              </th>
+              <th>
+                <div class="tooltip">
+                  Hex code
+                  <span class="tooltiptext">
+                    This is the Hexcode for the Name/Tag Color<br /> Allows copy/paste of colors<br />Accepts HexColor.<br />Leave #ffffff to disable<br />will automatically adjust the color/value to the closest accepted by the game
+                  </span>
+                </div>
+              <th>Delete Line</th>
+              <th>Add Line</th>
+              <th>Steam Profile</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="number" value="76561197994229267" onchange="validateid(this)" onwheel="this.blur()"></td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+              <td><input type="text" value="Developer"></td>
+              <td><input type="color" value="#ff3300" onchange="ValidateColor(this)"></td>
+              <td><input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" onchange="ValidateColor(this)" size=7 maxlength="7" value="#ff3300" style="vertical-align: middle"></td>
+              <td><input type="button" value="X" disabled></td>
+              <td><input type="button" value="+" onclick="StaffAddRow(this)"></td>
+              <td><a href="https://steamcommunity.com/id/Predatoria/" target="_blank">Predatoria</a></td>
+            </tr>
+            <tr>
+              <td><input type="number" value="76561198122870810" onchange="validateid(this)" onwheel="this.blur()"></td>
+              <td>
+                <select name="Ranks">
+                  <option value=" "> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin" selected>DefaultAdmin</option>
+                </select>
+              </td>
+              <td><input type="text" value="Developer"></td>
+              <td><input type="color" value="#00b2b2" onchange="ValidateColor(this)"></td>
+              <td><input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" onchange="ValidateColor(this)" size=7 maxlength="7" value="#00b2b2" style="vertical-align: middle"></td>
+              <td><input type="button" value="X" onclick="StaffRemoveRow(this)"></td>
+              <td><input type="button" value="+" onclick="StaffAddRow(this)"></td>
+              <td><a href="https://steamcommunity.com/id/Soals/" target="_blank">Soals</a></td>
+            </tr>
+            <tr>
+              <td><input type="number" value="76561198077984700" onchange="validateid(this)" onwheel="this.blur()"></td>
+              <td>
+                <select name="Ranks">
+                  <option value=" " selected> </option>
+                  <option value="NoAdmin">NoAdmin</option>
+                  <option value="DefaultAdmin">DefaultAdmin</option>
+                </select>
+              </td>
+              <td><input type="text" value="Tech Admin"></td>
+              <td><input type="color" value="#000fff" onchange="ValidateColor(this)"></td>
+              <td><input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" onchange="ValidateColor(this)" size=7 maxlength="7" value="#000fff" style="vertical-align: middle"></td>
+              <td><input type="button" value="X"></td>
+              <td><input type="button" value="+" onclick="StaffAddRow(this)"></td>
+              <td><a href="https://steamcommunity.com/id/cleafspear/" target="_blank">Cleafspear</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="Section" id="Section6" style="display: none">
+        <div class="section-header">
+          Advanced Configuration
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <p>This section contains less often used configuration settings, or setting found under different headers. only change these setting if you understand the risk!</p>
+        <label for="Autosave">Ausosave frequency:</label>
+        <input type="number" id="asave" value="135" onwheel="this.blur()" style="width:50px">
+        <label for="Autosave">Seconds</label>
+        <p><strong>Rcon (Remote Console) settings:</strong><i>(Beta, not fully implemented yet)</i></p>
+        <label for="enableRcon">
+          <span class="tooltip">
+            Enable Rcon
+            <span class="tooltiptext">This will enable Rcon output from the server to 3rd party Rcon clients</span>
+          </span>
+        </label>
+        <input class="checkbox" type="checkbox" id="enableRcon" onchange="SHSubSection('Rcon')">
+        <div id="Rcon" style="display: none">
+          <label for="RconPort">
+            <span class="tooltip">
+              Rcon Port Number:
+              <span class="tooltiptext">This is the port used to communicate remotely with the server via either the dedicated RCon tool or Scripts.</span>
+            </span>
+          </label>
+          <input type="number" id="RconPort" value=27015 min=1024 max=65536 onwheel="this.blur()">
+          <br />
+          <label for="Rconip">
+            <span class="tooltip">
+              Rcon Ip Address:
+              <span class="tooltiptext">This is the Ip address you want the RCon to be connected via. default is 127.0.0.1(localhost)</span>
+            </span>
+          </label>
+          <input type="text" id="Rconip" value="127.0.0.1" minlegnth="7" maxlength="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$"><!--IPv4 only pattern matching. rcon isnt setup to do IPv6-->
+        </div>
+        <p><strong>Discord Webhooks settings:</strong></p>
+        <label for="DiscordInt">
+          <span class="tooltip">
+            Enable Discord Webhooks
+            <span class="tooltiptext">This will enable the Discord intergration. this is a WebHooks based system, you will need to use Channel Webhooks for this to work!</span>
+          </span>
+        </label>
+        <input class="checkbox" type="checkbox" id="GameReporter" onchange="SHSubSection('DiscordIntergration')">
+        <div id="DiscordIntergration" style="display: none">
+          <br />
+
+          <label>
+            <span class="tooltip">
+              Chat Log:
+              <span class="tooltiptext">This is the webhook to the channel you want Chat to go to.</span>
+            </span>
+          </label>
+          <input class="checkbox" type="checkbox" id="bUseChatWebhook" onchange="SHSubSection('DiscordChat')">
+          <div id="DiscordChat" style="display: none">
+            <label>
+              <span class="tooltip">
+                Chat Log Hook:
+                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
+              </span>
+            </label>
+            <input type="text" id="ChatReportDiscordWebhook" value="" onchange="SanatizeHookInput(this)" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="TestWebhook('ChatReportDiscordWebhook','ChatReportIconURL','Chat Webhook')">
+                Test Webhook...
+                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
+              </div>
+            </button>
+            <br />
+            <label>
+              <span class="tooltip">
+                Chat Log Icon:
+                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
+              </span>
+            </label>
+            <input type="text" id="ChatReportIconURL" value="" style="width:1000px">
+            <br />
+            <label>
+              <span class="tooltip">
+                Chat Log Format:
+                <span class="tooltiptext">This is the Format used by the server to display messages posted in the webhooks</span>
+              </span>
+            </label>
+            <input type="text" id="ChatWebhookFormatStyle" value="[:x01]<{PlayerInfo}>[:x01] <ChatMode={ChatMode}> **>** _{msg}_" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="DefaultData('ChatWebhookFormatStyle','[:x01]<{PlayerInfo}>[:x01] <ChatMode={ChatMode}> **>** _{msg}_')">
+                Default Format...
+                <span class="tooltiptext">Clicking this will default the message format</span>
+              </div>
+            </button>
+          </div>
+          <br />
+          <label>
+            <span class="tooltip">
+              Combat Log:
+              <span class="tooltiptext">This is the webhook to the channel you want the Combat Log to go to.</span>
+            </span>
+          </label>
+          <input class="checkbox" type="checkbox" id="bUseCombatActivityWebhook" onchange="SHSubSection('DinoCombat')">
+          <div id="DinoCombat" style="display: none">
+            <label>
+              <span class="tooltip">
+                Combat Log Hook:
+                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
+              </span>
+            </label>
+            <input type="text" id="CombatActivityDiscordWebhook" value="" onchange="SanatizeHookInput(this)" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="TestWebhook('CombatActivityDiscordWebhook','CombatActivityDiscordIconURL','Combat Webhook')">
+                Test Webhook...
+                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
+              </div>
+            </button>
+            <br />
+            <label>
+              <span class="tooltip">
+                Combat Log Icon:
+                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
+              </span>
+            </label>
+            <input type="text" id="CombatActivityDiscordIconURL" value="" style="width:1000px">
+          </div>
+          <br />
+          <label>
+            <span class="tooltip">
+              Connection Log:
+              <span class="tooltiptext">This is the webhook to the channel you want Connects/Disconnects to go to.</span>
+            </span>
+          </label>
+          <input class="checkbox" type="checkbox" id="bUseLoginReportWebhook" onchange="SHSubSection('DiscordConnect')">
+          <div id="DiscordConnect" style="display: none">
+            <label>
+              <span class="tooltip">
+                Connection Log Hook:
+                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
+              </span>
+            </label>
+            <input type="text" id="LoginDiscordWebhook" value="" onchange="SanatizeHookInput(this)" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="TestWebhook('LoginDiscordWebhook','LoginDiscordIconURL','Login Webhook')">
+                Test Webhook...
+                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
+              </div>
+            </button>
+            <br />
+            <label>
+              <span class="tooltip">
+                Connection Log Icon:
+                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
+              </span>
+            </label>
+            <input type="text" id="LoginDiscordIconURL" value="" style="width:1000px">
+            <br />
+            <label>
+              <span class="tooltip">
+                Login Format:
+                <span class="tooltiptext">This is the Format used by the server to display messages posted in the webhooks</span>
+              </span>
+            </label>
+            <input type="text" id="LoginReportFormatStyle" value="Player [:x01]<{PlayerInfo}>[:x01] joined server _{Server}_\n----" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="DefaultData('LoginReportFormatStyle','Player [:x01]<{PlayerInfo}>[:x01] joined server _{Server}_\\n----')">
+                Default Format...
+                <span class="tooltiptext">Clicking this will default the message format</span>
+              </div>
+            </button>
+            <br />
+            <label>
+              <span class="tooltip">
+                Logout Format:
+                <span class="tooltiptext">This is the Format used by the server to display messages posted in the webhooks</span>
+              </span>
+            </label>
+            <input type="text" id="LogoutReportFormatStyle" value="Player [:x01]<{PlayerInfo}>[:x01] left server _{Server}_, played for {Hours} hours and {Minutes} minutes.\\n----" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="DefaultData('LogoutReportFormatStyle','Player [:x01]<{PlayerInfo}>[:x01] left server _{Server}_, played for {Hours} hours and {Minutes} minutes.\\n----')">
+                Default Format...
+                <span class="tooltiptext">Clicking this will default the message format</span>
+              </div>
+            </button>
+          </div>
+          <br />
+
+          <label>
+            <span class="tooltip">
+              Command Log:
+              <span class="tooltiptext">This is the webhook to the channel you want Admin Commands to go to.</span>
+            </span>
+          </label>
+          <input class="checkbox" type="checkbox" id="bUseAdminCommandUsageWebhook" onchange="SHSubSection('DiscordCommands')">
+          <div id="DiscordCommands" style="display: none">
+            <label>
+              <span class="tooltip">
+                Command Log Hook:
+                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
+              </span>
+            </label>
+            <input type="text" id="AdminCmdDiscordWebhook" value="" onchange="SanatizeHookInput(this)" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="TestWebhook('AdminCmdDiscordWebhook','AdminCmdDiscordIcon','Command Webhook')">
+                Test Webhook...
+                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
+              </div>
+            </button>
+            <br />
+            <label>
+              <span class="tooltip">
+                Command Log Icon:
+                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
+              </span>
+            </label>
+            <input type="text" id="AdminCmdDiscordIcon" value="" style="width:1000px">
+            <br />
+            <label>
+              <span class="tooltip">
+                Command Log Format:
+                <span class="tooltiptext">This is the Format used by the server to display messages posted in the webhooks</span>
+              </span>
+            </label>
+            <input type="text" id="AdminCommandUsageFormatStyle" value="Player [:x01]<{PlayerInfo}>[:x01] used command [:x01]{Cmd}[:x01]\n----" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="DefaultData('AdminCommandUsageFormatStyle','Player [:x01]<{PlayerInfo}>[:x01] used command [:x01]{Cmd}[:x01]\\n----')">
+                Default Format...
+                <span class="tooltiptext">Clicking this will default the message format</span>
+              </div>
+            </button>
+          </div>
+          <br />
+          <label>
+            <span class="tooltip">
+              Grouping Log:
+              <span class="tooltiptext">This is the webhook to the channel you want Grouping actions to go to.</span>
+            </span>
+          </label>
+          <input class="checkbox" type="checkbox" id="bUseGroupActivityWebhook" onchange="SHSubSection('DiscordGroup')">
+          <div id="DiscordGroup" style="display: none">
+            <label>
+              <span class="tooltip">
+                Grouping Log Hook:
+                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
+              </span>
+            </label>
+            <input type="text" id="GroupActivityDiscordWebhook" value="" onchange="SanatizeHookInput(this)" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="TestWebhook('GroupActivityDiscordWebhook','GroupActivityDiscordIconURL','Grouping Webhook')">
+                Test Webhook...
+                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
+              </div>
+            </button>
+            <br />
+
+            <label>
+              <span class="tooltip">
+                Grouping Log Icon:
+                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
+              </span>
+            </label>
+            <input type="text" id="GroupActivityDiscordIconURL" value="" style="width:1000px">
+          </div>
+          <br />
+          <label>
+            <span class="tooltip">
+              Event Log:
+              <span class="tooltiptext">This is the webhook to the channel you want World Events to go to.</span>
+            </span>
+          </label>
+          <input class="checkbox" type="checkbox" id="bUseEventsWebhook" onchange="SHSubSection('EventsWebhook')">
+          <div id="EventsWebhook" style="display: none">
+            <label>
+              <span class="tooltip">
+                Events Log Hook:
+                <span class="tooltiptext">This is the webhook link used. Accepts full webhook URLs and will convert on Entry.</span>
+              </span>
+            </label>
+            <input type="text" id="EventsDiscordWebhook" value="" onchange="SanatizeHookInput(this)" style="width:1000px">
+            <button>
+              <div class="tooltip" onclick="TestWebhook('EventsDiscordWebhook','EventsDiscordIconURL','Event Webhook')">
+                Test Webhook...
+                <span class="tooltiptext">Clicking this will send a test message to the supplied webhook.</span>
+              </div>
+            </button>
+            <br />
+
+            <label>
+              <span class="tooltip">
+                Events Log Icon:
+                <span class="tooltiptext">This is the webhook Icon you want to appear in Discord. This is an image URL</span>
+              </span>
+            </label>
+            <input type="text" id="EventsDiscordIconURL" value="" style="width:1000px">
+          </div>
+        </div>
+      </div>
+      <div class="Section" id="Final" style="display: none">
+        <div class="section-header">
+          Configuration Output
+          <span class="close" onclick="topFunction()">Top ↑</span>
+        </div>
+        <input type="button" value="Generate Game.ini below" onclick="GenertateTXT()">
+        <input type="button" value="Download Game.ini" onclick="GenerateFile()">
+        <br />
+        <p>Generate Game.ini will compile all the setting in the textarea below, and Download Game.ini will download a complete, ready to go file. When changing a setting, you must re-generate the ini by clicking a button above.</p>
+        <textarea rows="30" cols="120" style="scroll-behavior: auto ;resize: horizontal" id="Output" readonly>Click Generate Game.ini to output your config here,or click Download Game.ini to download a ready to insert file</textarea>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class='wrap'>
+      <div class='Fsectionl'>
+        Developed by <a href="https://github.com/cleafspear" target="_blank" style="cursor:pointer; text-decoration:none;">Cleafspear</a>
+        , Enhanced by <a href="https://discord.com/users/486634642766561280" target="_blank" style="cursor:pointer; text-decoration:none;">Anexmos</a>
+        <br /><a id="ConsoleButton" role="button" href="#" onclick="ToggleConsole()" style="cursor:pointer; text-decoration:none;">Show Debug Console</a>
+      </div>
+      <div class='Fsectionr'>
+        For any issues or feature requests, please submit them <a href="https://github.com/Sherif-Riad/BoB.Config" target="_blank" style="cursor:pointer; text-decoration:none;">here on GitHub</a>.
+        <br />
+        Steam API Provided by Raptor Systems US
+      </div>
+      <div class='Fsectionc'>
+        This web app includes no tracking, either internal or third-party.
+        <br />
+        Licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank">Open Source MIT License</a>.
+      </div>
+      <div id="Console" style="display: none">
+        Console Output:
+        <br />
+        <textarea id="ConsoleArea" draggable="false" style="width: 100% ;height: 80px; resize: vertical" readonly></textarea>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
