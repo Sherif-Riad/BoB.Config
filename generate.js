@@ -42,23 +42,45 @@ function Generate() {//the superfunction that builds all the configurations. any
   output.push('WorldEventDuration=' + document.getElementById("WorldEventDuration").value);
   output.push('WorldEventSpacing=' + document.getElementById("WorldEventSpacing").value);
   output.push('!WorldEventBuffsToNotUse=ClearArray');
+  //var WorldEventBuffsToNotUse = document.getElementById("WorldEventBuffsToNotUse");
+  //for (i in WorldEventBuffsToNotUse.rows) {//yes its useless but this will be refactored in a later revision. and it just works.
+  //  if (i === 'length' || i === 'item') { break; }
+  //  if (i != 0) {
+  //    var drow = WorldEventBuffsToNotUse.rows[1].cells[0].childNodes;
+  //    if (drow.length != 1) {
+  //      aData = [];
+  //      temp = [];
+  //      for (var y in drow) {
+  //        if (y === 'entries' || y === 'length' || y === 'item') { break; }
+  //        if (drow[y].tagName.toLowerCase() != 'input') { continue; }
+  //        var EventName = drow[y].value;
+  //        temp.push('WorldEventBuffsToNotUse=EVENT_' + EventName);
+  //      }
+  //      aData.push(temp.join('\r\n'));
+  //      output.push(aData);
+  //    }
+  //  }
+  //}
+
+  // Enhanced version by Anexmos
   var WorldEventBuffsToNotUse = document.getElementById("WorldEventBuffsToNotUse");
-  for (i in WorldEventBuffsToNotUse.rows) {//yes its useless but this will be refactored in a later revision. and it just works.
-    if (i === 'length' || i === 'item') { break; }
-    if (i != 0) {
-      var drow = WorldEventBuffsToNotUse.rows[1].cells[0].childNodes;
-      if (drow.length != 1) {
-        aData = [];
-        temp = [];
-        for (var y in drow) {
-          if (y === 'entries' || y === 'length' || y === 'item') { break; }
-          if (drow[y].tagName.toLowerCase() != 'input') { continue; }
-          var EventName = drow[y].value;
-          temp.push('WorldEventBuffsToNotUse=EVENT_' + EventName);
-        }
-        aData.push(temp.join('\r\n'));
-        output.push(aData);
-      }
+
+  // Loop through rows of the table
+  for (var i = 0; i < WorldEventBuffsToNotUse.rows.length; i++) {
+    var row = WorldEventBuffsToNotUse.rows[i];
+
+    // Loop through cells in the row
+    for (var j = 0; j < row.cells.length; j++) {
+      var cell = row.cells[j];
+
+      // Find input elements within the cell
+      var inputs = cell.querySelectorAll("input");
+
+      // Loop through input elements and collect their values
+      inputs.forEach(function (input) {
+        var EventName = input.value; // Get the value of the input
+        output.push('WorldEventBuffsToNotUse=EVENT_' + EventName); // Append formatted string to existing output array
+      });
     }
   }
 

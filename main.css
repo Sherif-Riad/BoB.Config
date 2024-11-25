@@ -50,6 +50,14 @@ body {
     background-color: lightblue;
   }
 
+  .flipflop.enabled {
+    background-color: palegreen;
+  }
+
+  .flipflop.disabled {
+    background-color: lightcoral;
+  }
+
 .section-header {
   background: rgb(218,205,119);
   background: linear-gradient(145deg, rgba(218,205,119,1) 0%, rgba(123,226,223,1) 45%, rgba(133,196,227,1) 100%);
@@ -159,6 +167,10 @@ body {
   text-align: center;
 }
 
+.limits th {
+  min-width: 7rem;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -174,7 +186,8 @@ body {
     padding: .2rem;
     border-radius: 6px;
     position: absolute;
-    z-index: 1;
+    z-index: 1001;
+    font-weight: normal;
   }
 
   /* Show the tooltip text when you mouse over the tooltip container */
@@ -258,7 +271,6 @@ input[type=number] {
 
 label {
   vertical-align: middle;
-  min-height: 1.4rem;
 }
 
 select {
@@ -279,7 +291,7 @@ input[type=number] {
   vertical-align: middle;
   border-radius: .3rem;
   border-width: .1rem;
-  min-height: 1.4rem;
+  min-height: 1.3rem;
 }
 
 input[type=color] {
@@ -295,4 +307,14 @@ textarea {
   vertical-align: middle;
   border-radius: .3rem;
   border-width: .1rem;
+}
+
+#MPTable td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#commands th {
+  text-align: left;
+  vertical-align: middle;
 }

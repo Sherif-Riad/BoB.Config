@@ -1,11 +1,12 @@
 //Dynamically generated content variables. used on page load to build some of the creature list as well as a single location to validate entries against
-const Creatures = ['Acrocanthosaurus', 'Apatosaurus', 'Archelon', 'Arganodus', 'Auroraceratops', 'Coahuilaceratops', 'Elasmosaurus', 'HorseshoeCrab', 'Kronosaurus', 'Ichthyovenator', 'Lurdusaurus', 'Malawania', 'Megalosaurus', 'Megaraptor', 'Mosasaurus', 'Oryctodromeus', 'Pachycephalosaurus', 'Palaeophis', 'Parasaurolophus', 'Pteranodon', 'Saichania', 'Tropeognathus', 'Tyrannosaurus', 'Utahraptor', 'Velociraptor'];
-const Herbivores = ['Apatosaurus', 'Archelon', 'Auroraceratops', 'Coahuilaceratops', 'HorseshoeCrab', 'Lurdusaurus', 'Oryctodromeus', 'Pachycephalosaurus', 'Parasaurolophus', 'Saichania'];
-const Carnivores = ['Acrocanthosaurus', 'Ichthyovenator', 'Megalosaurus', 'Megaraptor', 'Tyrannosaurus', 'Utahraptor', 'Velociraptor'];
+const Creatures = ['Acrocanthosaurus', 'Apatosaurus', 'Archelon', 'Arganodus', 'Auroraceratops', 'Coahuilaceratops', 'Elasmosaurus', 'HorseshoeCrab', 'Kronosaurus', 'Ichthyovenator', 'Lurdusaurus', 'Malawania', 'Megalosaurus', 'Megaraptor', 'Mosasaurus', 'Oryctodromeus', 'Pachycephalosaurus', 'Palaeophis', 'Parasaurolophus', 'Pteranodon', 'Saichania', 'Tropeognathus', 'Tyrannosaurus', 'Velociraptor'];
+const Herbivores = ['Apatosaurus', 'Auroraceratops', 'Coahuilaceratops', 'HorseshoeCrab', 'Lurdusaurus', 'Oryctodromeus', 'Pachycephalosaurus', 'Parasaurolophus', 'Saichania'];
+const Carnivores = ['Acrocanthosaurus', 'Ichthyovenator', 'Megalosaurus', 'Megaraptor', 'Tyrannosaurus', 'Velociraptor'];
 const Flyers = ['Pteranodon', 'Tropeognathus'];
-const Aquatics = ['Arganodus', 'Elasmosaurus', 'Kronosaurus', 'Malawania ', 'Mosasaurus', 'Palaeophis'];
-const Events = ['WeatherImmunity', 'LowFoodWaterDrain', 'AutoResurrection', 'AISwarm', 'Nesting', 'GrowthBuff', 'PledgeAmplify', 'Reskin'];
+const Aquatics = ['Archelon', 'Arganodus', 'Elasmosaurus', 'Kronosaurus', 'Malawania ', 'Mosasaurus', 'Palaeophis'];
 const AI = ['Arganodus', 'Auroraceratops', 'HorseshoeCrab', 'Malawania'];
+const Events = ['WeatherImmunity', 'LowFoodWaterDrain', 'AutoResurrection', 'AISwarm', 'Nesting', 'GrowthBuff', 'PledgeAmplify', 'Reskin'];
+
 var AddCreatureCarnButton = document.createDocumentFragment();
 var AddCreatureHerbButton = document.createDocumentFragment();
 var AddCreatureAquaButton = document.createDocumentFragment();
@@ -58,10 +59,10 @@ function SHSubSection(loc) {
 //used by the toggle on the dino screen to set the header for the list
 function HLToggle() {
   var Tname = document.getElementById("dinoh");
-  if (Tname.textContent === "Absolute Group limit") {
-    Tname.textContent = "Soft Limit";
+  if (Tname.textContent === "Group Hard-Limit") {
+    Tname.textContent = "Group Soft-Limit";
   } else {
-    Tname.textContent = "Absolute Group limit";
+    Tname.textContent = "Group Hard-Limit";
   }
 }
 function SanatizeInvite(input) {
@@ -102,8 +103,36 @@ function AddMPCreature(dSelect) {
   btn.type = 'button';
   btn.setAttribute('onclick', 'this.remove()');
   btn.value = creature;
+  btn.classList.add("flipflop");
+  btn.classList.add("disabled");
   dSelect.parentNode.parentNode.parentNode.insertAdjacentElement('beforeend', btn);
 }
+
+// Enhanced version of AddMPCreature for events to prevent duplicates of disabled events
+function AddEventsButton(dSelect) {
+  var itemName = dSelect.value;
+
+  // Check if an <input> button with the same value already exists outside the dropdown-content in the same <td>
+  var existingButton = dSelect.closest('td').querySelector('input[value="' + itemName + '"]');
+
+  // If the input button doesn't exist, create and append it
+  if (!existingButton) {
+    var btn = document.createElement('input');
+    btn.type = 'button';
+    btn.value = itemName;
+    btn.classList.add("flipflop");
+    btn.classList.add("disabled");
+
+    // Set up the event listener for button removal
+    btn.addEventListener('click', function () {
+      this.remove();
+    });
+
+    // Append the new input button to the <td> outside the dropdown
+    dSelect.closest('td').appendChild(btn);
+  }
+}
+
 function Setrow(button) {
   var btn = button.value,
     list = button.parentElement.children;
@@ -201,8 +230,8 @@ function RankAddRow(oButton) {
     cell3 = row.insertCell(3),
     opt = document.createElement("option"),
     select = 0;
-  cell0.innerHTML = '<input type="text" value="UnnamedRank" onchange="updatename(this)">';
-  cell1.innerHTML = '<input type="number" value="1" step= 1 onwheel="this.blur()" style="width:50px">';
+  cell0.innerHTML = '<input type="text" value="UnnamedRank" style="width:15rem;" onchange="updatename(this)" oninput="validateRankName(this)" pattern="[A-Za-z]+" title="Only alphabetic characters (A-Z, a-z) are allowed, no spaces or symbols.">';
+  cell1.innerHTML = '<input type="number" value="1" step= 1 onwheel="this.blur()" style="width:3rem;">';
   cell2.innerHTML = '<input type="button" value="X" onclick="RankRemoveRow(this)">';
   cell3.innerHTML = '<input type="button" value="+" onclick="RankAddRow(this)">';
   opt.innerHTML = "UnnamedRank";
@@ -213,6 +242,16 @@ function RankAddRow(oButton) {
   }
 
 }
+
+// Makes sure that admin rank names will not accept spaces or anything else but alpha
+function validateRankName(input) {
+  // Remove any non-alphabetic characters (including spaces and numbers)
+  input.value = input.value.replace(/[^A-Za-z]/g, '');
+
+  // Optionally, you can provide user feedback if needed, like:
+  // alert('Only alphabetic characters are allowed.');
+}
+
 function updatename(oText) {
   var loc = oText.parentNode.parentNode.rowIndex,
     selections = document.getElementsByName("Ranks"),
@@ -357,6 +396,63 @@ function validateid(id) {
   }
 }
 
+async function validateBulkIds(ids) {
+  if (!ids || ids.length === 0) {
+    console.warn("No Steam IDs provided for bulk validation.");
+    return;
+  }
+
+  const idString = ids.join(',');  // Combine the IDs into a single string
+  const APIURL = `https://salumee.com/steam?id=${idString}`;
+
+  try {
+    const response = await fetch(APIURL);
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log("Bulk Response Data:", data);  // Log the entire response data to inspect it
+
+    // Ensure the correct response structure
+    if (data.response && data.response.players) {
+      const players = data.response.players;
+
+      players.forEach((player, index) => {
+        const row = stafftab.rows[index];  // Map the row to player index
+
+        if (row) {
+          const link = row.cells[7].firstChild; // Get the link cell
+
+          if (player && player.profileurl && player.personaname) {
+            link.href = player.profileurl;  // Set the profile URL
+            link.innerHTML = player.personaname;  // Set the player name
+          } else {
+            link.innerHTML = 'Profile not found'; // Fallback text
+          }
+        }
+      });
+    } else {
+      console.error("Invalid response format:", data);
+    }
+  } catch (error) {
+    console.error('Error fetching Steam profiles:', error);
+  }
+}
+
+function prepareBulkIds() {
+  const ids = [];
+
+  // Collect Steam IDs from your input fields
+  const inputs = document.querySelectorAll("input[type='number']");
+  inputs.forEach(input => {
+    ids.push(input.value);
+  });
+
+  // Call the bulk validation function
+  validateBulkIds(ids);
+}
+
 function ValidateColor(colorbutton) {
   var pcolor = colorbutton.value;
   var r = "0x00";
@@ -424,9 +520,23 @@ function InternalDebug(message) {
     logger.innerHTML += message + "&#13;&#10;";
   }
 }
-function ReadyPage() {//this function is to replace a lot of the hand coded parts of the page with a runtime dynamic system.basically making updating parts a 1 line instead of multiline update. users should not be effected since all page data is already in ram. does cause a DOM update after load but performance hits should be negligable
+//this function is to replace a lot of the hand coded parts of the page with a runtime dynamic system.basically making updating parts a 1 line instead of multiline update. users should not be effected since all page data is already in ram. does cause a DOM update after load but performance hits should be negligable
+function ReadyPage() {
   var DinoTable = document.getElementById("dinos");
   DinoTable.deleteRow(-1);
+  var row = DinoTable.insertRow(-1),
+    cell0 = row.insertCell(0),
+    cell1 = row.insertCell(1),
+    cell2 = row.insertCell(2),
+    cell3 = row.insertCell(3),
+    cell4 = row.insertCell(4),
+    cell5 = row.insertCell(5);
+  cell0.innerHTML = 'ALL';
+  cell1.innerHTML = '<input type="number" class="masterCell" value="20" step="1" min="1" max="999" style="width:5rem;background-color:navajowhite;">';
+  cell2.innerHTML = '<input type="number" class="masterCell" value="100.0" min="0" max="100" style="min-width:5rem;background-color:navajowhite;">';
+  cell3.innerHTML = '<input type="number" class="masterCell" value="50.0" min="0.1" max="50" style="min-width:5rem;background-color:navajowhite;">';
+  cell4.innerHTML = '<input type="number" class="masterCell" value="0.7" min="0.1" max="50" style="min-width:5rem;background-color:navajowhite;">';
+  cell5.innerHTML = '<input type="number" class="masterCell" value="1.0" min="0.1" max="50" style="min-width:5rem;background-color:navajowhite;">';
   for (index = 0; index < Creatures.length; index++) {
     var row = DinoTable.insertRow(-1),
       cell0 = row.insertCell(0),
@@ -436,11 +546,11 @@ function ReadyPage() {//this function is to replace a lot of the hand coded part
       cell4 = row.insertCell(4),
       cell5 = row.insertCell(5);
     cell0.innerHTML = Creatures[index];
-    cell1.innerHTML = '<input type="number" value="999" step = 1 style="width:50px">';
-    cell2.innerHTML = '<input type="number" value="100.0" min = 0 max = 100>';
-    cell3.innerHTML = '<input type="number" value="20.0" min = 0.1 max = 20>';
-    cell4.innerHTML = '<input type="number" value="0.7" min = 0 max = 20>';
-    cell5.innerHTML = '<input type="number" value="1.0" min = 0 max = 20>';
+    cell1.innerHTML = '<input type="number" class="cell col1" value="20" step="1" min="1" max="999" style="width:5rem;">';
+    cell2.innerHTML = '<input type="number" class="cell col2" value="100.0" min="0" max="100" style="min-width:5rem;">';
+    cell3.innerHTML = '<input type="number" class="cell col3" value="50.0" min="0.1" max="50" style="min-width:5rem;">';
+    cell4.innerHTML = '<input type="number" class="cell col4" value="0.7" min="0.1" max="50" style="min-width:5rem;">';
+    cell5.innerHTML = '<input type="number" class="cell col5" value="1.0" min="0.1" max="50" style="min-width:5rem;">';
   }
   //this creates the "add creature" button dynamically and saves it to the global var for use elsewhere
   var innerdiv = document.createElement("div");
@@ -549,4 +659,53 @@ function ReadyPage() {//this function is to replace a lot of the hand coded part
 }
 document.addEventListener('DOMContentLoaded', function (event) {
   ReadyPage();
+});
+
+function initializeTableFunctionality() {
+  const table = document.getElementById("dinos");
+
+  if (table) {
+    const masterCells = table.querySelectorAll(".masterCell");
+
+    // Attach event listener to each master cell
+    masterCells.forEach((masterCell, index) => {
+      masterCell.addEventListener("input", () => {
+        const masterValue = masterCell.value;
+        const columnClass = `col${index + 1}`;
+
+        // Update all cells in the respective column
+        table.querySelectorAll(`.cell.${columnClass}`).forEach((cell) => {
+          cell.value = masterValue;
+        });
+      });
+    });
+
+    // Attach event listener to individual cells
+    table.querySelectorAll(".cell").forEach((cell) => {
+      cell.addEventListener("input", () => {
+        const columnClass = Array.from(cell.classList).find((cls) =>
+          cls.startsWith("col")
+        );
+
+        // Clear the corresponding master cell for the column
+        if (columnClass) {
+          const columnIndex = parseInt(columnClass.replace("col", ""), 10) - 1;
+          if (masterCells[columnIndex]) {
+            masterCells[columnIndex].value = "";
+          }
+        }
+      });
+    });
+  }
+}
+
+// Listen for the button click that populates the table
+document.addEventListener("DOMContentLoaded", () => {
+  const populateButton = document.getElementById("Dino2button");
+
+  if (populateButton) {
+    populateButton.addEventListener("click", () => {
+      initializeTableFunctionality();
+    });
+  }
 });
