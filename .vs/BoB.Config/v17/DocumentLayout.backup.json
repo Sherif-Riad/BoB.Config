@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "D:\\Solutions\\BoB.Config\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\site.webmanifest||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|solutionrelative:site.webmanifest||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|d:\\solutions\\bob.config\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D5781172-7856-469B-85CC-0ECA906F4379}|D:\\Solutions\\BoB.Config|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,14 +31,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "site.webmanifest",
-              "DocumentMoniker": "D:\\Solutions\\BoB.Config\\site.webmanifest",
-              "RelativeDocumentMoniker": "site.webmanifest",
-              "ToolTip": "D:\\Solutions\\BoB.Config\\site.webmanifest",
-              "RelativeToolTip": "site.webmanifest",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-11-25T16:41:05.238Z",
+              "Title": "index.html",
+              "DocumentMoniker": "D:\\Solutions\\BoB.Config\\index.html",
+              "RelativeDocumentMoniker": "index.html",
+              "ToolTip": "D:\\Solutions\\BoB.Config\\index.html",
+              "RelativeToolTip": "index.html",
+              "ViewState": "AgIAAAYIAAAAAAAAAAAAAB4IAACZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-11-26T04:42:34.608Z",
               "EditorCaption": ""
             }
           ]
